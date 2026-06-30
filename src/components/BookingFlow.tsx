@@ -7,6 +7,7 @@ type ServiceItem = {
   id: string;
   name: string;
   price: number;
+  description: string;
 };
 
 type SelectedService = ServiceItem & {
@@ -22,43 +23,147 @@ const serviceCategories: ServiceCategory[] = [
   {
     category: "Photo Packages",
     items: [
-      { id: "p1", name: "Photo 1 (< 2,000 sqft)", price: 225 },
-      { id: "p2", name: "Photo 2 (< 3,000 sqft)", price: 250 },
-      { id: "p3", name: "Photo 3 (< 4,000 sqft)", price: 275 },
-      { id: "p4", name: "Photo 4 (< 5,000 sqft)", price: 350 },
-      { id: "p10", name: "Photo 10 (10,000+ sqft)", price: 750 },
+      {
+        id: "p1",
+        name: "Photo 1 (< 2,000 sqft)",
+        price: 225,
+        description:
+          "15-20 hand-blended, MLS ready images. This is best for properties approx. 2,000 sqft or less.",
+      },
+      {
+        id: "p2",
+        name: "Photo 2 (< 3,000 sqft)",
+        price: 250,
+        description:
+          "21-30 hand-blended, MLS ready images. This is best for properties approx. 3,000 sqft or less.",
+      },
+      {
+        id: "p3",
+        name: "Photo 3 (< 4,000 sqft)",
+        price: 275,
+        description:
+          "Premium photo coverage tailored for larger homes under 4,000 sqft. Description coming soon.",
+      },
+      {
+        id: "p4",
+        name: "Photo 4 (< 5,000 sqft)",
+        price: 350,
+        description:
+          "Expanded photo coverage for estates under 5,000 sqft. Description coming soon.",
+      },
+      {
+        id: "p10",
+        name: "Photo 10 (10,000+ sqft)",
+        price: 750,
+        description:
+          "Comprehensive photography for luxury estates and large-scale properties. Description coming soon.",
+      },
     ],
   },
   {
     category: "Video Packages",
     items: [
-      { id: "v1", name: "Video 1 (60-90 sec tour)", price: 575 },
-      { id: "v2", name: "Video 2 (2 min cinematic + aerial)", price: 875 },
+      {
+        id: "v1",
+        name: "Video 1 (60-90 sec tour)",
+        price: 575,
+        description:
+          "A 60-90 second professionally edited video tour showcasing your property's best features with smooth motion, cinematic pacing, and licensed background music.",
+      },
+      {
+        id: "v2",
+        name: "Video 2 (2 min cinematic + aerial)",
+        price: 875,
+        description:
+          "A 2-minute professionally edited and hand-retouched video tour that captures your property with cinematic precision. Includes aerial footage and enhanced sound design.",
+      },
       {
         id: "v2plus",
         name: "Video 2+ (Includes neighborhood/amenities)",
         price: 1500,
+        description:
+          "Extended cinematic tour with neighborhood and amenity coverage. Description coming soon.",
       },
-      { id: "v3", name: "Video 3 (Premium + Twilight)", price: 2000 },
+      {
+        id: "v3",
+        name: "Video 3 (Premium + Twilight)",
+        price: 2000,
+        description:
+          "Our most premium video experience. A 1-2 minute cinematic tour showcasing your property during the day and at sunset. Includes a 30-sec social teaser.",
+      },
     ],
   },
   {
     category: "Floor Plans & 3D Tours",
     items: [
-      { id: "fp1", name: "2D Floor Plan (< 5,000 sqft)", price: 300 },
-      { id: "fp2", name: "3D Floor Plan (< 5,000 sqft)", price: 400 },
-      { id: "m1", name: "Matterport 1 (< 5,000 sqft)", price: 400 },
-      { id: "m2", name: "Matterport 2 (5,000-10,000 sqft)", price: 750 },
+      {
+        id: "fp1",
+        name: "2D Floor Plan (< 5,000 sqft)",
+        price: 300,
+        description:
+          "Clean, accurate 2D floor plan for listings under 5,000 sqft. Description coming soon.",
+      },
+      {
+        id: "fp2",
+        name: "3D Floor Plan (< 5,000 sqft)",
+        price: 400,
+        description:
+          "Interactive 3D floor plan visualization for enhanced buyer engagement. Description coming soon.",
+      },
+      {
+        id: "m1",
+        name: "Matterport 1 (< 5,000 sqft)",
+        price: 400,
+        description:
+          "Immersive Matterport 3D tour for properties under 5,000 sqft. Description coming soon.",
+      },
+      {
+        id: "m2",
+        name: "Matterport 2 (5,000-10,000 sqft)",
+        price: 750,
+        description:
+          "Full-scale Matterport capture for larger luxury listings. Description coming soon.",
+      },
     ],
   },
   {
     category: "Add-Ons & Aerial",
     items: [
-      { id: "a1", name: "Aerial Photo 1 (< 2 acres)", price: 200 },
-      { id: "t1", name: "Twilight 1 (3-5 HDR images)", price: 450 },
-      { id: "vt", name: "Virtual Twilight (Per Image)", price: 60 },
-      { id: "vo", name: "Professional Voice Over", price: 750 },
-      { id: "ge", name: "Google Earth Animation", price: 200 },
+      {
+        id: "a1",
+        name: "Aerial Photo 1 (< 2 acres)",
+        price: 200,
+        description:
+          "Drone photography showcasing the property and surrounding land. Description coming soon.",
+      },
+      {
+        id: "t1",
+        name: "Twilight 1 (3-5 HDR images)",
+        price: 450,
+        description:
+          "Golden-hour exterior images that elevate curb appeal at dusk. Description coming soon.",
+      },
+      {
+        id: "vt",
+        name: "Virtual Twilight (Per Image)",
+        price: 60,
+        description:
+          "Digitally enhanced twilight conversion for individual listing photos. Description coming soon.",
+      },
+      {
+        id: "vo",
+        name: "Professional Voice Over",
+        price: 750,
+        description:
+          "Broadcast-quality narration for your property video tour. Description coming soon.",
+      },
+      {
+        id: "ge",
+        name: "Google Earth Animation",
+        price: 200,
+        description:
+          "Animated location context highlighting neighborhood and proximity. Description coming soon.",
+      },
     ],
   },
 ];
@@ -80,9 +185,20 @@ export default function BookingFlow() {
   const [preferredShootDate, setPreferredShootDate] = useState("");
   const [accessInstructions, setAccessInstructions] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const isServiceSelected = (id: string) =>
     selectedServices.some((service) => service.id === id);
+
+  const isExpanded = (id: string) => expandedItems.includes(id);
+
+  const toggleExpanded = (id: string) => {
+    setExpandedItems((current) =>
+      current.includes(id)
+        ? current.filter((itemId) => itemId !== id)
+        : [...current, id],
+    );
+  };
 
   const toggleService = (category: string, item: ServiceItem) => {
     setSelectedServices((current) => {
@@ -168,13 +284,14 @@ export default function BookingFlow() {
                   <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {category.items.map((item) => {
                       const selected = isServiceSelected(item.id);
+                      const expanded = isExpanded(item.id);
 
                       return (
-                        <button
+                        <motion.div
                           key={item.id}
-                          type="button"
+                          layout
                           onClick={() => toggleService(category.category, item)}
-                          className={`rounded-2xl border p-5 text-left transition-all duration-300 ${
+                          className={`cursor-pointer rounded-2xl border p-5 text-left transition-all duration-300 ${
                             selected
                               ? "border-white bg-white text-black"
                               : "border-white/10 bg-zinc-950 text-white hover:border-white/30"
@@ -187,10 +304,45 @@ export default function BookingFlow() {
                           >
                             {item.name}
                           </p>
+
+                          <button
+                            type="button"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              toggleExpanded(item.id);
+                            }}
+                            className={`mt-2 text-xs transition-colors duration-300 ${
+                              selected
+                                ? "text-black/50 hover:text-black/80"
+                                : "text-neutral-500 hover:text-neutral-300"
+                            }`}
+                          >
+                            {expanded ? "Hide Details" : "View Details"}
+                          </button>
+
+                          <AnimatePresence>
+                            {expanded && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3, ease }}
+                              >
+                                <p
+                                  className={`mt-3 text-sm ${
+                                    selected ? "text-black/60" : "text-gray-400"
+                                  }`}
+                                >
+                                  {item.description}
+                                </p>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
                           <p className="mt-4 text-2xl font-bold">
                             ${item.price}
                           </p>
-                        </button>
+                        </motion.div>
                       );
                     })}
                   </div>
