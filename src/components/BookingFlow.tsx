@@ -1,0 +1,378 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { useMemo, useState } from "react";
+
+type ServiceItem = {
+  id: string;
+  name: string;
+  price: number;
+};
+
+type SelectedService = ServiceItem & {
+  category: string;
+};
+
+type ServiceCategory = {
+  category: string;
+  items: ServiceItem[];
+};
+
+const serviceCategories: ServiceCategory[] = [
+  {
+    category: "Photo Packages",
+    items: [
+      { id: "p1", name: "Photo 1 (< 2,000 sqft)", price: 225 },
+      { id: "p2", name: "Photo 2 (< 3,000 sqft)", price: 250 },
+      { id: "p3", name: "Photo 3 (< 4,000 sqft)", price: 275 },
+      { id: "p4", name: "Photo 4 (< 5,000 sqft)", price: 350 },
+      { id: "p10", name: "Photo 10 (10,000+ sqft)", price: 750 },
+    ],
+  },
+  {
+    category: "Video Packages",
+    items: [
+      { id: "v1", name: "Video 1 (60-90 sec tour)", price: 575 },
+      { id: "v2", name: "Video 2 (2 min cinematic + aerial)", price: 875 },
+      {
+        id: "v2plus",
+        name: "Video 2+ (Includes neighborhood/amenities)",
+        price: 1500,
+      },
+      { id: "v3", name: "Video 3 (Premium + Twilight)", price: 2000 },
+    ],
+  },
+  {
+    category: "Floor Plans & 3D Tours",
+    items: [
+      { id: "fp1", name: "2D Floor Plan (< 5,000 sqft)", price: 300 },
+      { id: "fp2", name: "3D Floor Plan (< 5,000 sqft)", price: 400 },
+      { id: "m1", name: "Matterport 1 (< 5,000 sqft)", price: 400 },
+      { id: "m2", name: "Matterport 2 (5,000-10,000 sqft)", price: 750 },
+    ],
+  },
+  {
+    category: "Add-Ons & Aerial",
+    items: [
+      { id: "a1", name: "Aerial Photo 1 (< 2 acres)", price: 200 },
+      { id: "t1", name: "Twilight 1 (3-5 HDR images)", price: 450 },
+      { id: "vt", name: "Virtual Twilight (Per Image)", price: 60 },
+      { id: "vo", name: "Professional Voice Over", price: 750 },
+      { id: "ge", name: "Google Earth Animation", price: 200 },
+    ],
+  },
+];
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+function calculateTotal(services: SelectedService[]) {
+  return services.reduce((sum, service) => sum + service.price, 0);
+}
+
+export default function BookingFlow() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [selectedServices, setSelectedServices] = useState<SelectedService[]>(
+    [],
+  );
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [propertyAddress, setPropertyAddress] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [preferredShootDate, setPreferredShootDate] = useState("");
+  const [accessInstructions, setAccessInstructions] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const isServiceSelected = (id: string) =>
+    selectedServices.some((service) => service.id === id);
+
+  const toggleService = (category: string, item: ServiceItem) => {
+    setSelectedServices((current) => {
+      const exists = current.some((service) => service.id === item.id);
+      const next = exists
+        ? current.filter((service) => service.id !== item.id)
+        : [...current, { ...item, category }];
+
+      setTotalPrice(calculateTotal(next));
+      return next;
+    });
+  };
+
+  const groupedSelectedServices = useMemo(() => {
+    return selectedServices.reduce<Record<string, SelectedService[]>>(
+      (groups, service) => {
+        if (!groups[service.category]) {
+          groups[service.category] = [];
+        }
+        groups[service.category].push(service);
+        return groups;
+      },
+      {},
+    );
+  }, [selectedServices]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitted(true);
+  };
+
+  return (
+    <section className="relative bg-black pb-32">
+      <div className="border-t border-white/10 px-6 py-16 lg:px-12 lg:py-24">
+        <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+          OM Media 2026 Pricing
+        </p>
+        <h2 className="mt-4 text-4xl font-bold tracking-tighter text-white lg:text-5xl">
+          Build Your Listing Package
+        </h2>
+        <p className="mt-4 max-w-2xl text-neutral-400">
+          Select the services you need for this property. Your total updates
+          instantly as you build the package.
+        </p>
+
+        <div className="mt-8 flex items-center gap-3">
+          {[1, 2].map((step) => (
+            <div
+              key={step}
+              className={`h-px flex-1 transition-colors duration-300 ${
+                currentStep >= step ? "bg-white" : "bg-neutral-800"
+              }`}
+            />
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          {currentStep === 1 && (
+            <motion.div
+              key="step-1"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.5, ease }}
+              className="mt-12 space-y-12"
+            >
+              <div>
+                <h3 className="text-2xl font-semibold text-white">
+                  Step 1 — Build Your Package
+                </h3>
+                <p className="mt-2 text-neutral-400">
+                  Choose one or more services across photos, video, floor plans,
+                  and premium add-ons.
+                </p>
+              </div>
+
+              {serviceCategories.map((category) => (
+                <div key={category.category}>
+                  <h4 className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-500">
+                    {category.category}
+                  </h4>
+
+                  <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {category.items.map((item) => {
+                      const selected = isServiceSelected(item.id);
+
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => toggleService(category.category, item)}
+                          className={`rounded-2xl border p-5 text-left transition-all duration-300 ${
+                            selected
+                              ? "border-white bg-white text-black"
+                              : "border-white/10 bg-zinc-950 text-white hover:border-white/30"
+                          }`}
+                        >
+                          <p
+                            className={`text-sm leading-snug ${
+                              selected ? "text-black/70" : "text-neutral-400"
+                            }`}
+                          >
+                            {item.name}
+                          </p>
+                          <p className="mt-4 text-2xl font-bold">
+                            ${item.price}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setCurrentStep(2)}
+                disabled={selectedServices.length === 0}
+                className="rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-wide text-black transition-colors duration-300 hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Next: Property Details
+              </button>
+            </motion.div>
+          )}
+
+          {currentStep === 2 && !isSubmitted && (
+            <motion.div
+              key="step-2"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.5, ease }}
+              className="mt-12"
+            >
+              <h3 className="text-2xl font-semibold text-white">
+                Step 2 — Property Details
+              </h3>
+              <p className="mt-2 text-neutral-400">
+                Tell us about the listing and how we should access the property.
+              </p>
+
+              <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                <div>
+                  <label
+                    htmlFor="property-address"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Property Address
+                  </label>
+                  <input
+                    id="property-address"
+                    type="text"
+                    required
+                    value={propertyAddress}
+                    onChange={(event) => setPropertyAddress(event.target.value)}
+                    className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                    placeholder="123 Main Street, Newtown, PA"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="client-name"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Client Name
+                  </label>
+                  <input
+                    id="client-name"
+                    type="text"
+                    required
+                    value={clientName}
+                    onChange={(event) => setClientName(event.target.value)}
+                    className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                    placeholder="Agent or homeowner name"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="shoot-date"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Preferred Shoot Date
+                  </label>
+                  <input
+                    id="shoot-date"
+                    type="date"
+                    required
+                    value={preferredShootDate}
+                    onChange={(event) =>
+                      setPreferredShootDate(event.target.value)
+                    }
+                    className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 focus:border-white [color-scheme:dark]"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="access-instructions"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Access Instructions
+                  </label>
+                  <textarea
+                    id="access-instructions"
+                    required
+                    rows={4}
+                    value={accessInstructions}
+                    onChange={(event) =>
+                      setAccessInstructions(event.target.value)
+                    }
+                    className="w-full resize-none rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                    placeholder="Lockbox code, gate access, staging notes, etc."
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="rounded-full border border-white/30 px-8 py-4 text-sm font-medium text-white transition-colors duration-300 hover:border-white"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-wide text-black transition-colors duration-300 hover:bg-neutral-200"
+                  >
+                    Submit Booking
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          )}
+
+          {currentStep === 2 && isSubmitted && (
+            <motion.div
+              key="step-2-success"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease }}
+              className="mt-12 rounded-2xl border border-white/10 bg-zinc-950 p-8 lg:p-10"
+            >
+              <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+                Booking Received
+              </p>
+              <h3 className="mt-4 text-3xl font-bold tracking-tight text-white">
+                Your shoot request is in.
+              </h3>
+              <p className="mt-4 max-w-2xl text-neutral-400">
+                We&apos;ll review your package for{" "}
+                <span className="text-white">{propertyAddress}</span> and follow
+                up to confirm scheduling details.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between lg:px-12">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+              Order Summary
+            </p>
+            <p className="mt-1 text-sm text-neutral-400">
+              {selectedServices.length}{" "}
+              {selectedServices.length === 1 ? "service" : "services"} selected
+            </p>
+            {selectedServices.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {Object.entries(groupedSelectedServices).map(
+                  ([category, services]) => (
+                    <span
+                      key={category}
+                      className="rounded-full border border-white/10 px-3 py-1 text-xs text-neutral-300"
+                    >
+                      {category}: {services.length}
+                    </span>
+                  ),
+                )}
+              </div>
+            )}
+          </div>
+          <p className="text-3xl font-bold tracking-tight text-white">
+            ${totalPrice}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
