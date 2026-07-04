@@ -1,13 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+import CanvasScroll from "@/components/CanvasScroll";
 import AboutStory from "@/components/AboutStory";
 import CreatorForm from "@/components/CreatorForm";
 import PersonalBranding from "@/components/PersonalBranding";
 import Preloader from "@/components/Preloader";
 import ServicesIndustries from "@/components/ServicesIndustries";
 import StickyPortfolio from "@/components/StickyPortfolio";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 const headlineReveal = {
   initial: { opacity: 0, y: 30, filter: "blur(12px)" },
@@ -74,6 +76,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Cinematic Apple Scroll Component */}
+      <CanvasScroll />
 
       <StickyPortfolio />
 
