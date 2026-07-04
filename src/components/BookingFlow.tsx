@@ -28,35 +28,112 @@ const serviceCategories: ServiceCategory[] = [
         name: "Photo 1 (< 2,000 sqft)",
         price: 225,
         description:
-          "15-20 hand-blended, MLS ready images. This is best for properties approx. 2,000 sqft or less.",
+          "15-20 hand-blended, MLS ready images. Best for properties approx. 2,000 sqft or less.",
       },
       {
         id: "p2",
         name: "Photo 2 (< 3,000 sqft)",
         price: 250,
-        description:
-          "21-30 hand-blended, MLS ready images. This is best for properties approx. 3,000 sqft or less.",
+        description: "21-30 hand-blended, MLS ready images.",
       },
       {
         id: "p3",
         name: "Photo 3 (< 4,000 sqft)",
         price: 275,
-        description:
-          "Premium photo coverage tailored for larger homes under 4,000 sqft. Description coming soon.",
+        description: "31-40 hand-blended, MLS ready images.",
       },
       {
         id: "p4",
         name: "Photo 4 (< 5,000 sqft)",
         price: 350,
-        description:
-          "Expanded photo coverage for estates under 5,000 sqft. Description coming soon.",
+        description: "41-50 hand-blended, MLS ready images.",
+      },
+      {
+        id: "p5",
+        name: "Photo 5 (< 6,000 sqft)",
+        price: 400,
+        description: "51-60 hand-blended, MLS ready images.",
+      },
+      {
+        id: "p6",
+        name: "Photo 6 (< 7,000 sqft)",
+        price: 450,
+        description: "61-70 hand-blended, MLS ready images.",
+      },
+      {
+        id: "p7",
+        name: "Photo 7 (< 8,000 sqft)",
+        price: 550,
+        description: "71-80 hand-blended, MLS ready images.",
+      },
+      {
+        id: "p8",
+        name: "Photo 8 (< 9,000 sqft)",
+        price: 600,
+        description: "81-90 hand-blended, MLS ready images.",
+      },
+      {
+        id: "p9",
+        name: "Photo 9 (< 10,000 sqft)",
+        price: 650,
+        description: "91-100 hand-blended, MLS ready images.",
       },
       {
         id: "p10",
         name: "Photo 10 (10,000+ sqft)",
         price: 750,
+        description: "100+ hand-blended, MLS ready images.",
+      },
+      {
+        id: "ex1",
+        name: "Exterior 1",
+        price: 200,
         description:
-          "Comprehensive photography for luxury estates and large-scale properties. Description coming soon.",
+          "Approx. 10 exterior only, MLS ready images. < 4,000 sqft.",
+      },
+      {
+        id: "ex2",
+        name: "Exterior 2",
+        price: 300,
+        description:
+          "Approx. 20 exterior only, MLS ready images. > 4,000 sqft.",
+      },
+    ],
+  },
+  {
+    category: "Photo Add-Ons & Drone",
+    items: [
+      {
+        id: "nn1",
+        name: "Nearby Neighborhood(s)",
+        price: 100,
+        description:
+          "Approx. 3 images of each neighborhood hot spots within 3 miles.",
+      },
+      {
+        id: "dp1",
+        name: "Drone Photo 1 (< 2 acres)",
+        price: 200,
+        description: "5-10 hand-retouched, MLS ready aerial images.",
+      },
+      {
+        id: "dp2",
+        name: "Drone Photo 2 (2-5 acres)",
+        price: 250,
+        description: "11-15 hand-retouched, MLS ready aerial images.",
+      },
+      {
+        id: "dp3",
+        name: "Drone Photo 3 (6-10 acres)",
+        price: 325,
+        description: "16-20 hand-retouched, MLS ready aerial images.",
+      },
+      {
+        id: "dpv1",
+        name: "Drone Photo & Video 1",
+        price: 500,
+        description:
+          "5-10 aerial images & 15 second aerial teaser video. < 2 acres.",
       },
     ],
   },
@@ -127,15 +204,8 @@ const serviceCategories: ServiceCategory[] = [
     ],
   },
   {
-    category: "Add-Ons & Aerial",
+    category: "Video & Production Add-Ons",
     items: [
-      {
-        id: "a1",
-        name: "Aerial Photo 1 (< 2 acres)",
-        price: 200,
-        description:
-          "Drone photography showcasing the property and surrounding land. Description coming soon.",
-      },
       {
         id: "t1",
         name: "Twilight 1 (3-5 HDR images)",
