@@ -11,21 +11,27 @@ export default function CanvasScroll() {
 
   const FRAME_COUNT = 96;
 
-  // 1. Preload all 96 images so they don't flash/flicker while scrolling
   useEffect(() => {
-    const preloadImages = () => {
-      const loadedImages: HTMLImageElement[] = [];
-      for (let i = 0; i < FRAME_COUNT; i++) {
-        const img = new Image();
-        // Uses the exact filename format from your Mac
-        img.src = `/images/sequence/05homescrollwipe${String(i).padStart(2, "0")}.jpg`;
-        loadedImages.push(img);
-      }
-      imagesRef.current = loadedImages;
-      setIsReady(true);
-    };
-
-    preloadImages();
+    const loadedImages: HTMLImageElement[] = [];
+    
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image();
+      // Updated to match the web-safe dash
+      img.src = `/images/sequence/05homescroll-wipe${String(i).padStart(2, "0")}.jpg`;
+      
+      img.onload = () => {
+        // Trigger the initial draw the split-second the first frame is ready
+        if (i === 0) setIsReady(true);
+      };
+      
+      img.onerror = () => {
+        console.error("Failed to load frame:", img.src);
+      };
+      
+      loadedImages.push(img);
+    }
+    
+    imagesRef.current = loadedImages;
   }, []);
 
   // 2. Track the scroll progress of the container
