@@ -18,7 +18,7 @@ export default function CanvasScroll() {
       for (let i = 0; i < FRAME_COUNT; i++) {
         const img = new Image();
         // Uses the exact filename format from your Mac
-        img.src = `/images/sequence/06homescroll${String(i).padStart(2, "0")}.jpg`;
+        img.src = `/images/sequence/05homescrollwipe${String(i).padStart(2, "0")}.jpg`;
         loadedImages.push(img);
       }
       imagesRef.current = loadedImages;
