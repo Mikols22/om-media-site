@@ -3,20 +3,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import type { CreatorApplicationPayload } from "@/types/submissions";
+import { serviceAreaOptions } from "@/content/serviceAreas";
 
 const availabilityOptions = [
   "1 day per week",
   "2-3 days",
   "4-5 days",
   "Full-time",
-];
-
-const serviceAreaOptions = [
-  "Bucks County",
-  "Philly",
-  "NYC Metro",
-  "NJ",
-  "Nationwide",
 ];
 
 type FormData = {
@@ -121,18 +115,22 @@ export default function CreatorForm() {
     setError(null);
 
     try {
+      const payload: CreatorApplicationPayload = {
+        ...formData,
+        availability,
+        serviceAreas,
+      };
+
       const response = await fetch("/api/submit-application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          availability,
-          serviceAreas,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        const data = (await response.json()) as { error?: string };
+        const data = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
         throw new Error(data.error ?? "Submission failed");
       }
 
@@ -149,7 +147,7 @@ export default function CreatorForm() {
   };
 
   return (
-    <section className="bg-black">
+    <section id="creators" className="scroll-mt-16 bg-black lg:scroll-mt-20">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
         <div className="flex flex-col justify-center px-6 py-20 lg:px-16 lg:py-28 xl:px-24">
           <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">

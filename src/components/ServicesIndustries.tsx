@@ -1,101 +1,5 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-
-type GridItem = {
-  id: string;
-  slug: string;
-  title: string;
-  category: "INDUSTRY";
-  description: string;
-  imageSrc: string;
-  className: string;
-};
-
-const gridItems: GridItem[] = [
-  {
-    id: "real-estate",
-    slug: "real-estate",
-    title: "Real Estate",
-    category: "INDUSTRY",
-    description: "Luxury properties brought to life on screen.",
-    imageSrc: "/images/high-dunes-avalon.png",
-    className: "col-span-2 row-span-2 md:col-span-2 md:row-span-2",
-  },
-  {
-    id: "interior-design",
-    slug: "interior-design",
-    title: "Interior Design",
-    category: "INDUSTRY",
-    description: "Spaces styled with cinematic precision.",
-    imageSrc: "/images/outside-interiors-1.jpg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "architecture",
-    slug: "architecture",
-    title: "Architecture",
-    category: "INDUSTRY",
-    description: "Structural beauty captured from every angle.",
-    imageSrc: "/images/river-rd-caryn-black.jpg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "hospitality",
-    slug: "hospitality",
-    title: "Hospitality",
-    category: "INDUSTRY",
-    description: "Hotels and venues with unforgettable visual identity.",
-    imageSrc: "/images/hotel-fort-myers-fl.jpeg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "lifestyle",
-    slug: "lifestyle",
-    title: "Lifestyle",
-    category: "INDUSTRY",
-    description: "Aspirational content that connects with audiences.",
-    imageSrc: "/images/lifestyle-place-holder.jpg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "golf-courses",
-    slug: "golf-courses",
-    title: "Golf Courses",
-    category: "INDUSTRY",
-    description: "Sweeping aerials and course cinematography.",
-    imageSrc: "/images/hole-2.jpg",
-    className: "col-span-2 row-span-1 md:col-span-2",
-  },
-  {
-    id: "food-bev",
-    slug: "food-and-bev",
-    title: "Food & Bev",
-    category: "INDUSTRY",
-    description: "Restaurants and brands served with visual appetite.",
-    imageSrc: "/images/shrimp-pasta.jpg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "commercial",
-    slug: "commercial",
-    title: "Commercial",
-    category: "INDUSTRY",
-    description: "High-impact campaigns for businesses that scale.",
-    imageSrc: "/images/silverstein-properties.jpg",
-    className: "col-span-1 row-span-1",
-  },
-  {
-    id: "headshots",
-    slug: "headshots",
-    title: "Headshots",
-    category: "INDUSTRY",
-    description: "Professional portraits that command attention.",
-    imageSrc: "/images/jim-blake-headshot.jpg",
-    className: "col-span-2 row-span-1 md:col-span-2",
-  },
-];
+import IndustryGrid from "@/components/IndustryGrid";
 
 const podcastPlatforms = [
   {
@@ -127,52 +31,29 @@ const podcastPlatforms = [
   },
 ];
 
-const BentoCard = ({ item }: { item: GridItem }) => {
-  return (
-    <Link
-      href={`/portfolio/${item.slug}`}
-      className={`group relative flex min-h-[240px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-neutral-900 p-6 transition-colors duration-300 hover:border-white/20 ${item.className}`}
-    >
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={item.imageSrc || "/placeholder.jpg"}
-          alt={item.title}
-          fill
-          className="object-cover opacity-30 transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
-      </div>
-
-      <div className="relative z-10 mt-auto pointer-events-none">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-neutral-400">
-          INDUSTRY
-        </p>
-        <h3 className="text-2xl font-bold tracking-tight text-white">
-          {item.title}
-        </h3>
-      </div>
-    </Link>
-  );
-};
-
 export default function ServicesIndustries() {
   return (
-    <section className="bg-black">
+    <section id="services" className="scroll-mt-16 bg-black lg:scroll-mt-20">
       <div className="border-t border-white/10 px-6 py-20 lg:px-12 lg:py-28">
-        <div className="mb-12 lg:mb-16">
-          <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
-            What We Do
-          </p>
-          <h2 className="mt-4 text-4xl font-bold tracking-tighter text-white lg:text-6xl">
-            Services & Industries
-          </h2>
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 lg:mb-16">
+          <div>
+            <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+              What We Do
+            </p>
+            <h2 className="mt-4 text-4xl font-bold tracking-tighter text-white lg:text-6xl">
+              Services & Industries
+            </h2>
+          </div>
+
+          <Link
+            href="/services"
+            className="text-sm font-medium uppercase tracking-[0.2em] text-white underline-offset-4 transition-opacity duration-300 hover:opacity-70"
+          >
+            View All Services →
+          </Link>
         </div>
 
-        <div className="grid auto-rows-[minmax(12rem,auto)] grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {gridItems.map((item, index) => (
-            <BentoCard key={index} item={item} />
-          ))}
-        </div>
+        <IndustryGrid />
       </div>
 
       <div className="border-t border-white/10">

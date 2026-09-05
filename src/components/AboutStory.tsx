@@ -2,39 +2,23 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
-
-const storyBlocks = [
-  {
-    text: "We are more than a production company—we are a full-scale creative agency.",
-    className: "text-lg text-gray-400 md:text-xl",
-  },
-  {
-    text: "Built on the talents of industry-leading visual storytellers, OM Media operates as a unified force to elevate the brands we partner with.",
-    className: "text-lg text-gray-400 md:text-xl",
-  },
-  {
-    text: "Our team's dedication to the craft has landed our work in Dwell and The New York Times, alongside projects for artists like Dierks Bentley and The O'Jays.",
-    className: "text-2xl font-medium text-white md:text-3xl",
-    featured: true,
-  },
-  {
-    text: "Based out of the Bucks County and Philadelphia area, our roster of creators scales to meet your unique needs, delivering uncompromising visual strategy nationwide.",
-    className: "text-lg text-gray-400 md:text-xl",
-  },
-];
+import { storyBlocks } from "@/content/about";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 function StoryBlock({
   text,
-  className,
   featured = false,
 }: {
   text: string;
-  className: string;
   featured?: boolean;
 }) {
+  const className = featured
+    ? "text-2xl font-medium text-white md:text-3xl"
+    : "text-lg text-gray-400 md:text-xl";
+
   return (
     <motion.p
       initial={{ opacity: featured ? 0.4 : 0.5 }}
@@ -59,7 +43,11 @@ export default function AboutStory() {
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   return (
-    <section ref={sectionRef} className="bg-black">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="scroll-mt-16 bg-black lg:scroll-mt-20"
+    >
       <div className="md:grid md:grid-cols-2">
         <div className="relative h-[50vh] md:sticky md:top-0 md:h-screen">
           <motion.div
@@ -87,11 +75,17 @@ export default function AboutStory() {
               <StoryBlock
                 key={block.text}
                 text={block.text}
-                className={block.className}
                 featured={block.featured}
               />
             ))}
           </div>
+
+          <Link
+            href="/about"
+            className="mt-10 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-300 hover:opacity-70"
+          >
+            Read Our Full Story →
+          </Link>
         </div>
       </div>
     </section>

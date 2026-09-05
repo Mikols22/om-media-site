@@ -1,45 +1,25 @@
 import { NextResponse } from "next/server";
+import { submitOrStoreLocally } from "@/lib/submissions";
+import type { CreatorApplicationPayload } from "@/types/submissions";
 
 export async function POST(request: Request) {
+  let body: CreatorApplicationPayload;
   try {
-    const crmUrl = process.env.CRM_API_URL;
-    const crmKey = process.env.CRM_API_KEY;
+    body = (await request.json()) as CreatorApplicationPayload;
+  } catch (error) {
+    console.error("Malformed submit-application request body:", error);
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
 
-    if (!crmUrl || !crmKey) {
-      return NextResponse.json(
-        { error: "CRM configuration is missing." },
-        { status: 500 },
-      );
-    }
-
-    const body = await request.json();
-
-    const crmResponse = await fetch(crmUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${crmKey}`,
-      },
-      body: JSON.stringify(body),
-    });
-
-    const data = (await crmResponse.json().catch(() => ({}))) as {
-      error?: string;
-      success?: boolean;
-      [key: string]: unknown;
-    };
-
-    if (!crmResponse.ok) {
-      return NextResponse.json(
-        { error: data.error ?? "Failed to submit application." },
-        { status: crmResponse.status },
-      );
-    }
-
-    return NextResponse.json(
-      data.success !== undefined ? data : { success: true },
+  try {
+    return await submitOrStoreLocally(
+      "applications",
+      "/api/creators/apply",
+      body,
+      "Failed to submit application.",
     );
-  } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 500 });
+  } catch (error) {
+    console.error("Unexpected error submitting application:", error);
+    return NextResponse.json({ error: "Failed to submit application." }, { status: 500 });
   }
 }

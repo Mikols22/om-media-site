@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import CanvasScroll from "@/components/CanvasScroll";
 import AboutStory from "@/components/AboutStory";
+import ContactTeaser from "@/components/ContactTeaser";
 import CreatorForm from "@/components/CreatorForm";
 import PersonalBranding from "@/components/PersonalBranding";
 import Preloader from "@/components/Preloader";
@@ -87,6 +88,8 @@ export default function Home() {
       <PersonalBranding />
 
       <AboutStory />
+
+      <ContactTeaser />
 
       <CreatorForm />
     </>
