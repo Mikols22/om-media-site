@@ -54,6 +54,10 @@ export type ClientInquiryPayload = {
   // Skippable — see REFERRAL_OPTIONS in src/content/contactOptions.ts.
   // Omitted when the user skips this step.
   referralSource?: string;
+  // Only present when referralSource is "referral" and the user filled in
+  // who referred them — optional even then, so omitted rather than sent
+  // empty if they leave it blank.
+  referralName?: string;
 };
 
 export type BookingSubmissionPayload =

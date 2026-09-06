@@ -225,6 +225,7 @@ export default function ContactFlow() {
   const [locationDetails, setLocationDetails] = useState("");
   const [budget, setBudget] = useState<string | null>(null);
   const [referralSource, setReferralSource] = useState<string | null>(null);
+  const [referralName, setReferralName] = useState("");
 
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -258,6 +259,8 @@ export default function ContactFlow() {
       ...(locationDetails.trim() && { locationDetails: locationDetails.trim() }),
       ...(budget && { budget }),
       ...(referralSource && { referralSource }),
+      ...(referralSource === "referral" &&
+        referralName.trim() && { referralName: referralName.trim() }),
     };
 
     try {
@@ -496,6 +499,35 @@ export default function ContactFlow() {
                   />
                 ))}
               </div>
+
+              <AnimatePresence>
+                {referralSource === "referral" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-6">
+                      <label
+                        htmlFor="referral-name"
+                        className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                      >
+                        Who can we thank? (optional)
+                      </label>
+                      <input
+                        id="referral-name"
+                        type="text"
+                        value={referralName}
+                        onChange={(event) => setReferralName(event.target.value)}
+                        className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                        placeholder="Their name"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <StepNav
                 onBack={goBack}
