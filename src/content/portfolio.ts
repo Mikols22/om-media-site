@@ -40,7 +40,10 @@ export const caseStudies: CaseStudy[] = [
     id: "noir",
     title: "Asher Architects | Ocean County NJ",
     subheading: "Stunning coastal architecture and luxury design.",
-    video: "/videos/26-laurel-ridge-rd-asher-architects.mov",
+    video: getAssetUrl(
+      "asher-architects-1920.mp4",
+      "/videos/26-laurel-ridge-rd-asher-architects.mov",
+    ),
     // [PLACEHOLDER] poster: "/images/portfolio/asher-architects-poster.jpg",
   },
 ];
