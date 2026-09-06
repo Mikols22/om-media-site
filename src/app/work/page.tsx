@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { industryItems } from "@/components/IndustryGrid";
+import { PORTFOLIO_CATEGORY_ORDER, industryItems } from "@/components/IndustryGrid";
 import { portfolioImages } from "@/content/portfolioImages";
 
 const title = "Portfolio | OM Media";
@@ -18,24 +18,10 @@ export const metadata: Metadata = {
   },
 };
 
-// Display order for this page only — independent of industryItems' own
-// order, which drives the homepage bento grid's className spans.
-const WORK_PAGE_ORDER = [
-  "real-estate",
-  "interior-design",
-  "architecture",
-  "commercial",
-  "hospitality",
-  "golf-courses",
-  "food-and-bev",
-  "lifestyle",
-  "headshots",
-];
-
-const categories = WORK_PAGE_ORDER.map((slug) => {
+const categories = PORTFOLIO_CATEGORY_ORDER.map((slug) => {
   const item = industryItems.find((candidate) => candidate.slug === slug);
   if (!item) {
-    throw new Error(`WORK_PAGE_ORDER references unknown slug: ${slug}`);
+    throw new Error(`PORTFOLIO_CATEGORY_ORDER references unknown slug: ${slug}`);
   }
   return item;
 });

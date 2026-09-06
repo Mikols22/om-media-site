@@ -10,6 +10,22 @@ type GridItem = {
   className: string;
 };
 
+// Canonical display order used anywhere all nine categories are listed
+// together outside this component's own bento layout (e.g. /work,
+// ContactFlow's project-type step) — independent of industryItems' own
+// order below, which drives this file's bento className spans.
+export const PORTFOLIO_CATEGORY_ORDER = [
+  "real-estate",
+  "interior-design",
+  "architecture",
+  "commercial",
+  "hospitality",
+  "golf-courses",
+  "food-and-bev",
+  "lifestyle",
+  "headshots",
+];
+
 export const industryItems: GridItem[] = [
   {
     id: "real-estate",

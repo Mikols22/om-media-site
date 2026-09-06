@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ContactForm from "@/components/ContactForm";
+import ContactFlow from "@/components/ContactFlow";
 
 const title = "Contact | OM Media";
 const description =
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-black pt-16 lg:pt-20">
-      <ContactForm />
+      <ContactFlow />
     </main>
   );
 }

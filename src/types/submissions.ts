@@ -35,6 +35,21 @@ export type ClientInquiryPayload = {
   email: string;
   phone: string;
   message: string;
+  // Portfolio category slugs (see industryItems in IndustryGrid.tsx), e.g.
+  // ["real-estate", "commercial"].
+  projectCategories: string[];
+  // See TIMELINE_OPTIONS in src/content/contactOptions.ts for allowed values.
+  timeline: string;
+  // See LOCATION_OPTIONS in src/content/contactOptions.ts for allowed values.
+  location: string;
+  locationDetails?: string;
+  // Skippable — see BUDGET_OPTIONS in src/content/contactOptions.ts. Omitted
+  // (not an empty string or "not-sure") when the user skips this step, so
+  // "skipped" and "selected Not Sure Yet" stay distinguishable.
+  budget?: string;
+  // Skippable — see REFERRAL_OPTIONS in src/content/contactOptions.ts.
+  // Omitted when the user skips this step.
+  referralSource?: string;
 };
 
 export type BookingSubmissionPayload =
