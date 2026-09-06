@@ -1,13 +1,11 @@
 // Shared between /portfolio/[slug] and /hospitality (which pulls the
 // hospitality + golf-courses categories into one national landing page).
 export const portfolioImages: Record<string, string[]> = {
-  "real-estate": [
-    "/images/real-estate-1.jpg",
-    "/images/real-estate-2.jpg",
-    "/images/real-estate-3.jpg",
-    "/images/real-estate-4.jpg",
-    "/images/real-estate-5.jpg",
-  ],
+  "real-estate": Array.from({ length: 27 }, (_, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    const ext = num === "22" ? "png" : "jpg"; // real-estate-22 is the one PNG
+    return `/images/portfolio/real-estate/real-estate-${num}.${ext}`;
+  }),
   "interior-design": ["/images/outside-interiors-1.jpg"],
   architecture: ["/images/river-rd-caryn-black.jpg"],
   lifestyle: ["/images/lifestyle-place-holder.jpg"],
@@ -15,5 +13,8 @@ export const portfolioImages: Record<string, string[]> = {
   hospitality: [],
   "food-and-bev": [],
   "golf-courses": [],
-  headshots: [],
+  headshots: Array.from(
+    { length: 15 },
+    (_, i) => `/images/portfolio/headshots/larken-${String(i + 1).padStart(2, "0")}.jpg`,
+  ),
 };

@@ -13,6 +13,7 @@ function formatSlug(slug: string) {
 // for categories that don't need anything more descriptive.
 const ALT_TEXT_OVERRIDES: Record<string, string> = {
   headshots: "Executive headshot",
+  "real-estate": "Real estate listing photography",
 };
 
 export async function generateMetadata({
