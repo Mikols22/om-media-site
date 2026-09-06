@@ -119,7 +119,7 @@ export default function BrandingShootsPage() {
           {SHOOT_INCLUDES.map((item) => (
             <li key={item} className="flex gap-3">
               <span className="text-white">—</span>
-              {item}
+              <span>{item}</span>
             </li>
           ))}
         </ul>

@@ -124,7 +124,7 @@ export default function ContentCreationPage() {
           {WHAT_WE_CREATE.map((item) => (
             <li key={item} className="flex gap-3">
               <span className="text-white">—</span>
-              {item}
+              <span>{item}</span>
             </li>
           ))}
         </ul>
