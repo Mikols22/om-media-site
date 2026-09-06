@@ -41,7 +41,7 @@ src/components/
 
 ## Homepage component sequence (`src/app/page.tsx`)
 
-1. `Preloader` (video splash, hardcoded 3200ms timer, not tied to actual asset load)
+1. `Preloader` (video splash + thin progress bar, fixed `PRELOADER_DURATION_MS` (2000ms) timer — deliberately not tied to real asset load, since the hero/case-study videos are 170MB-770MB and would make it run far longer than intended)
 2. Hero: `<video>` background (`144-89th-st-wolstenhome-associates.mp4`) + headline
 3. `CanvasScroll` — 300vh scroll-linked image-sequence wipe transition
 4. `StickyPortfolio` — video case studies
