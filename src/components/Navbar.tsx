@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { LOGO_URL } from "@/lib/assets";
 import { serviceLines } from "@/content/services";
 
 type NavLink = {
@@ -61,12 +63,15 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 z-50 w-full bg-black/20 backdrop-blur-md">
       <div className="mx-auto flex h-16 items-center justify-between px-6 lg:h-20 lg:px-12">
-        <Link
-          href="/"
-          onClick={closeMenu}
-          className="text-lg font-semibold tracking-tight text-white lg:text-xl"
-        >
-          OM Media
+        <Link href="/" onClick={closeMenu} className="flex items-center">
+          <Image
+            src={LOGO_URL}
+            alt="OM Media"
+            width={128}
+            height={128}
+            priority
+            className="h-10 w-10 lg:h-12 lg:w-12"
+          />
         </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">

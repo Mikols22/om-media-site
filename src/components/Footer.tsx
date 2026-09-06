@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { LOCAL_BUSINESS_INFO } from "@/content/localSeo";
 import { serviceAreaOptions } from "@/content/serviceAreas";
 import { serviceLines } from "@/content/services";
+import { LOGO_URL } from "@/lib/assets";
 
 const exploreLinks = [
   { href: "/work", label: "Work" },
@@ -56,8 +58,14 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12 lg:py-20">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link href="/" className="text-lg font-semibold text-white">
-              OM Media
+            <Link href="/" className="inline-flex items-center">
+              <Image
+                src={LOGO_URL}
+                alt="OM Media"
+                width={128}
+                height={128}
+                className="h-12 w-12"
+              />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
               Award-winning video production and digital strategy.

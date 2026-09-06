@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "f005.backblazeb2.com",
+        pathname: "/file/om-media-site-assets/**",
+      },
     ],
   },
 };
