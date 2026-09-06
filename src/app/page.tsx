@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import CanvasScroll from "@/components/CanvasScroll";
@@ -8,7 +7,6 @@ import AboutStory from "@/components/AboutStory";
 import ContactTeaser from "@/components/ContactTeaser";
 import CreatorForm from "@/components/CreatorForm";
 import PersonalBranding from "@/components/PersonalBranding";
-import Preloader, { PRELOADER_DURATION_MS } from "@/components/Preloader";
 import ServicesIndustries from "@/components/ServicesIndustries";
 import StickyPortfolio from "@/components/StickyPortfolio";
 import { getAssetUrl } from "@/lib/assets";
@@ -19,20 +17,8 @@ const headlineReveal = {
 };
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, PRELOADER_DURATION_MS);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <>
-      <Preloader isLoading={isLoading} />
-
       <section className="relative h-screen w-full overflow-hidden bg-black">
         <video
           autoPlay

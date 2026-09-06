@@ -27,7 +27,6 @@ src/app/
 
 src/components/
   Navbar.tsx            fixed nav: anchor links (#work/#services/#about/#contact — no matching ids on page), /book, external client portal link
-  Preloader.tsx          fullscreen video splash, controlled by page.tsx's isLoading state
   SmoothScroll.tsx        Lenis root wrapper used in layout.tsx
   CanvasScroll.tsx         canvas <img> sequence wipe effect, scroll-driven (see below)
   StickyPortfolio.tsx     sticky sidebar + scrolling video project list (IntersectionObserver-driven active state)
@@ -41,14 +40,15 @@ src/components/
 
 ## Homepage component sequence (`src/app/page.tsx`)
 
-1. `Preloader` (video splash + thin progress bar, fixed `PRELOADER_DURATION_MS` (2000ms) timer — deliberately not tied to real asset load, since the hero/case-study videos are 170MB-770MB and would make it run far longer than intended)
-2. Hero: `<video>` background (`144-89th-st-wolstenhome-associates.mp4`) + headline
-3. `CanvasScroll` — 300vh scroll-linked image-sequence wipe transition
-4. `StickyPortfolio` — video case studies
-5. `ServicesIndustries` — industry bento grid + podcast teaser
-6. `PersonalBranding`
-7. `AboutStory`
-8. `CreatorForm`
+1. Hero: `<video>` background (via `getAssetUrl`, B2-hosted `hero.mp4` with local fallback) + headline
+2. `CanvasScroll` — 300vh scroll-linked image-sequence wipe transition
+3. `StickyPortfolio` — video case studies
+4. `ServicesIndustries` — industry bento grid + podcast teaser
+5. `PersonalBranding`
+6. `AboutStory`
+7. `CreatorForm`
+
+No preloader — removed after determining it never gated real readiness (it was a fixed-duration overlay on top of a page that mounts underneath regardless) and was pure friction on every visit. The hero `<video>` has a `poster` attribute to avoid a black flash while it buffers.
 
 ## CanvasScroll mechanics
 
@@ -70,7 +70,7 @@ Draws frames from `public/images/sequence/05homescroll-wipe00.jpg` … `wipe95.j
 ## Assets
 
 - `public/images/` — real photo assets + `sequence/` (96-frame wipe sequence for CanvasScroll)
-- `public/videos/` — **gitignored** (`.gitignore` line `public/videos/`). Contains large (170MB–770MB) `.mp4`/`.mov` files referenced directly by components (hero, StickyPortfolio, Preloader). Since this directory isn't tracked by git, a fresh clone will be missing every video the homepage/portfolio depends on — these files must be provisioned separately (not currently documented where from).
+- `public/videos/` — **gitignored** (`.gitignore` line `public/videos/`), still the local fallback for the hero and StickyPortfolio videos when `NEXT_PUBLIC_ASSET_URL` is unset (see `src/lib/assets.ts`'s `getAssetUrl`). All four of those videos are now primarily served compressed from Backblaze B2 instead — the old 170MB–770MB local files predate that migration and are no longer representative of production size.
 - Some referenced images don't exist in `public/images`: `process-1/2/3.jpg` (only used by the orphaned `ScrollSequence.tsx`), and several `/portfolio/[slug]` gallery entries (`real-estate-*.jpg`) are not present on disk.
 
 ## Current state
