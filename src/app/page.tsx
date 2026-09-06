@@ -56,19 +56,6 @@ export default function Home() {
           >
             Award-winning video production and digital strategy.
           </motion.p>
-
-          <motion.div
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 text-[15rem] font-black leading-none tracking-tighter text-white/5"
-            animate={{ y: [-20, 20] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          >
-            OM
-          </motion.div>
         </div>
       </section>
 
