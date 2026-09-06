@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { REAL_ESTATE_TIMELINE_OPTIONS } from "@/content/bookingOptions";
 import type {
   BookingSubmissionPayload,
   InquiryBookingPayload,
@@ -297,6 +298,9 @@ export default function BookingFlow() {
   const [preferredShootDate, setPreferredShootDate] = useState("");
   const [accessInstructions, setAccessInstructions] = useState("");
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [realEstateTimeline, setRealEstateTimeline] = useState<string | null>(
+    null,
+  );
 
   // Inquiry flow state
   const [inquiryName, setInquiryName] = useState("");
@@ -401,6 +405,7 @@ export default function BookingFlow() {
       clientName,
       preferredShootDate,
       accessInstructions,
+      timeline: realEstateTimeline ?? "",
     };
 
     void submitBooking(payload);
@@ -423,7 +428,7 @@ export default function BookingFlow() {
     void submitBooking(payload);
   };
 
-  const totalSteps = serviceType === "inquiry" ? 2 : 3;
+  const totalSteps = serviceType === "inquiry" ? 2 : 4;
 
   return (
     <section className="relative bg-black pb-32">
@@ -616,6 +621,53 @@ export default function BookingFlow() {
                   disabled={selectedServices.length === 0}
                   className="rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-wide text-black transition-colors duration-300 hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
                 >
+                  Next: Timeline
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {currentStep === 2 && serviceType === "real-estate" && (
+            <motion.div
+              key="step-timeline"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.5, ease }}
+              className="mt-12"
+            >
+              <h3 className="text-2xl font-semibold text-white">
+                Step 3 — Timeline
+              </h3>
+              <p className="mt-2 text-neutral-400">
+                When are you looking to have this shoot done?
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {REAL_ESTATE_TIMELINE_OPTIONS.map((option) => (
+                  <Pill
+                    key={option.value}
+                    label={option.label}
+                    active={realEstateTimeline === option.value}
+                    onClick={() => setRealEstateTimeline(option.value)}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-10 flex flex-wrap gap-4">
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(1)}
+                  className="rounded-full border border-white/30 px-8 py-4 text-sm font-medium text-white transition-colors duration-300 hover:border-white"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(3)}
+                  disabled={!realEstateTimeline}
+                  className="rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-wide text-black transition-colors duration-300 hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-40"
+                >
                   Next: Property Details
                 </button>
               </div>
@@ -797,9 +849,9 @@ export default function BookingFlow() {
             </motion.div>
           )}
 
-          {currentStep === 2 && serviceType === "real-estate" && !isSubmitted && (
+          {currentStep === 3 && serviceType === "real-estate" && !isSubmitted && (
             <motion.div
-              key="step-2"
+              key="step-3"
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -807,7 +859,7 @@ export default function BookingFlow() {
               className="mt-12"
             >
               <h3 className="text-2xl font-semibold text-white">
-                Step 3 — Property Details
+                Step 4 — Property Details
               </h3>
               <p className="mt-2 text-neutral-400">
                 Tell us about the listing and how we should access the property.
@@ -896,7 +948,7 @@ export default function BookingFlow() {
                 <div className="flex flex-wrap gap-4 pt-4">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(1)}
+                    onClick={() => setCurrentStep(2)}
                     disabled={isSubmitting}
                     className="rounded-full border border-white/30 px-8 py-4 text-sm font-medium text-white transition-colors duration-300 hover:border-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
@@ -914,9 +966,9 @@ export default function BookingFlow() {
             </motion.div>
           )}
 
-          {currentStep === 2 && serviceType === "real-estate" && isSubmitted && (
+          {currentStep === 3 && serviceType === "real-estate" && isSubmitted && (
             <motion.div
-              key="step-2-success"
+              key="step-3-success"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease }}

@@ -17,6 +17,10 @@ export type RealEstateBookingPayload = {
   clientName: string;
   preferredShootDate: string;
   accessInstructions: string;
+  // See REAL_ESTATE_TIMELINE_OPTIONS in src/content/bookingOptions.ts for
+  // allowed values. Distinct from ClientInquiryPayload's timeline, which is
+  // for consultative project work rather than listing shoot turnaround.
+  timeline: string;
 };
 
 export type InquiryBookingPayload = {
