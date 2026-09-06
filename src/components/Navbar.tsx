@@ -42,6 +42,7 @@ function ChevronIcon({ className }: { className?: string }) {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isDesktopServicesOpen, setIsDesktopServicesOpen] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -54,6 +55,8 @@ export default function Navbar() {
     setIsMenuOpen(false);
     setIsServicesOpen(false);
   };
+
+  const closeDesktopServices = () => setIsDesktopServicesOpen(false);
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-black/20 backdrop-blur-md">
@@ -69,21 +72,56 @@ export default function Navbar() {
         <ul className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) =>
             link.children ? (
-              <li key={link.href} className="group relative">
+              <li
+                key={link.href}
+                className="relative"
+                onMouseEnter={() => setIsDesktopServicesOpen(true)}
+                onMouseLeave={closeDesktopServices}
+                onFocus={() => setIsDesktopServicesOpen(true)}
+                onBlur={(event) => {
+                  if (
+                    !event.currentTarget.contains(
+                      event.relatedTarget as Node | null,
+                    )
+                  ) {
+                    closeDesktopServices();
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    closeDesktopServices();
+                    event.currentTarget
+                      .querySelector<HTMLAnchorElement>("a")
+                      ?.focus();
+                  }
+                }}
+              >
                 <Link
                   href={link.href}
+                  onClick={closeDesktopServices}
                   className="flex items-center gap-1 text-sm font-medium tracking-wide text-white transition-opacity duration-300 hover:opacity-70"
                 >
                   {link.label}
-                  <ChevronIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-180" />
+                  <ChevronIcon
+                    className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                      isDesktopServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </Link>
 
-                <div className="invisible absolute left-0 top-full z-50 w-64 pt-3 opacity-0 transition-opacity duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div
+                  className={`absolute left-0 top-full z-50 w-64 pt-3 transition-opacity duration-200 ${
+                    isDesktopServicesOpen
+                      ? "visible opacity-100"
+                      : "invisible opacity-0"
+                  }`}
+                >
                   <div className="rounded-2xl border border-white/10 bg-zinc-950 p-2 shadow-xl">
                     {link.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
+                        onClick={closeDesktopServices}
                         className="block rounded-xl px-4 py-3 text-sm text-neutral-300 transition-colors duration-200 hover:bg-white/5 hover:text-white"
                       >
                         {child.label}
