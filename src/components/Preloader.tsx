@@ -1,6 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { LOGO_URL } from "@/lib/assets";
 
 // Not tied to real asset loading: the hero/case-study videos this site
 // preloads are 170MB-770MB (see CLAUDE.md's Assets section), so gating on
@@ -23,12 +25,13 @@ export default function Preloader({ isLoading }: { isLoading: boolean }) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <video
-              src="/videos/om-media-loading-page.mp4"
-              autoPlay
-              muted
-              playsInline
-              className="pointer-events-none w-full max-w-lg object-contain md:max-w-2xl"
+            <Image
+              src={LOGO_URL}
+              alt="OM Media"
+              width={128}
+              height={128}
+              priority
+              className="h-20 w-20 sm:h-24 sm:w-24"
             />
           </motion.div>
 
