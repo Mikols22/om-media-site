@@ -31,10 +31,10 @@ export const serviceLines: ServiceLine[] = [
   },
   {
     slug: "podcast-production",
-    name: "Podcast Production",
-    tagline: "Studio-quality recording and editing, start to finish.",
+    name: "The OM hOMe Show",
+    tagline: "A one-on-one podcast for the people building, designing, and selling the spaces around us.",
     summary:
-      "Full podcast production — recording, editing, and distribution — for shows based in or around Bucks County and Philadelphia.",
+      "A podcast produced by OM Media and recorded in our Doylestown studio, featuring builders, designers, realtors, and hospitality leaders.",
   },
   {
     slug: "video-production",
