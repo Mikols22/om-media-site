@@ -8,9 +8,10 @@ import AboutStory from "@/components/AboutStory";
 import ContactTeaser from "@/components/ContactTeaser";
 import CreatorForm from "@/components/CreatorForm";
 import PersonalBranding from "@/components/PersonalBranding";
-import Preloader from "@/components/Preloader";
+import Preloader, { PRELOADER_DURATION_MS } from "@/components/Preloader";
 import ServicesIndustries from "@/components/ServicesIndustries";
 import StickyPortfolio from "@/components/StickyPortfolio";
+import { getAssetUrl } from "@/lib/assets";
 
 const headlineReveal = {
   initial: { opacity: 0, y: 30, filter: "blur(12px)" },
@@ -23,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3200);
+    }, PRELOADER_DURATION_MS);
 
     return () => clearTimeout(timer);
   }, []);
@@ -38,9 +39,16 @@ export default function Home() {
           muted
           loop
           playsInline
+          poster="/images/hero-poster.jpg"
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/videos/144-89th-st-wolstenhome-associates.mp4" type="video/mp4" />
+          <source
+            src={getAssetUrl(
+              "hero.mp4",
+              "/videos/144-89th-st-wolstenhome-associates.mp4",
+            )}
+            type="video/mp4"
+          />
         </video>
 
         <div className="absolute inset-0 bg-black/60" />
