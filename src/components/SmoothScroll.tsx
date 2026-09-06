@@ -34,5 +34,15 @@ export default function SmoothScroll({
     return <>{children}</>;
   }
 
-  return <ReactLenis root>{children}</ReactLenis>;
+  // `content` defaults to `document.documentElement`, but the root <html>
+  // element has a fixed `height: 100%` (see layout.tsx's `h-full` class),
+  // so its box never grows with overflowing content and Lenis's
+  // ResizeObserver never fires when the page grows after mount (e.g. an
+  // accordion expanding). `document.body` only has `min-height: 100%`, so
+  // it actually resizes with its content and Lenis picks up the change.
+  return (
+    <ReactLenis root options={{ content: document.body }}>
+      {children}
+    </ReactLenis>
+  );
 }

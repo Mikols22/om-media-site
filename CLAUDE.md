@@ -9,7 +9,7 @@ Marketing site + client tools for OM Media (video production / digital strategy 
 - TypeScript 5, Tailwind CSS 4 (via `@tailwindcss/postcss`)
 - framer-motion 12.40.0 — scroll/viewport animation throughout
 - gsap 3.15.0 — installed, not currently used in any component
-- @studio-freight/react-lenis 0.0.47 — smooth scroll wrapper (`SmoothScroll.tsx`), has a `@ts-expect-error` suppressing a React 18/19 type mismatch
+- lenis 1.3.26 (`lenis/react`'s `ReactLenis`) — smooth scroll wrapper (`SmoothScroll.tsx`), replacing the deprecated `@studio-freight/react-lenis` (React 19 incompatible). Disabled on `pointer: coarse` (touch) devices. **`content` is explicitly set to `document.body`, not the default `document.documentElement`** — the root `<html>` has `h-full` (`height: 100%`), which pins its own box to the viewport regardless of overflowing content, so Lenis's `ResizeObserver` never fires on `<html>` when the page grows after mount. Symptom if this regresses: scroll hard-stops short of the true bottom (by roughly the amount of height added) after anything changes page height post-mount — an accordion expanding, images loading in, etc. Fix is pointing `content` at `document.body`, which only has `min-h-full` and actually resizes with its content.
 - ESLint 9 / eslint-config-next
 
 No test runner, no CI config, no `vercel.json`/`vercel.ts`.
