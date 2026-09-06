@@ -1,3 +1,5 @@
+import { getAssetUrl } from "@/lib/assets";
+
 // Case studies shared between the homepage's sticky-scroll teaser
 // (StickyPortfolio) and the standalone /work overview page.
 export type CaseStudy = {
@@ -18,14 +20,20 @@ export const caseStudies: CaseStudy[] = [
     id: "meridian",
     title: "Avalon | Summerhouse Design",
     subheading: "High-end interior and architectural showcase.",
-    video: "/videos/177-59th-st-horizontal.mp4",
+    video: getAssetUrl(
+      "avalon-summerhouse-1920.mp4",
+      "/videos/177-59th-st-horizontal.mp4",
+    ),
     // [PLACEHOLDER] poster: "/images/portfolio/avalon-summerhouse-poster.jpg",
   },
   {
     id: "apex",
     title: "Warwick Farm Brewing | Bourbon Release",
     subheading: "Dynamic event coverage for an exclusive product launch.",
-    video: "/videos/warwick_farm-brewing_bourbon-release.mov",
+    video: getAssetUrl(
+      "warwick-farm-bourbon-1920.mp4",
+      "/videos/warwick_farm-brewing_bourbon-release.mov",
+    ),
     // [PLACEHOLDER] poster: "/images/portfolio/warwick-farm-bourbon-poster.jpg",
   },
   {
