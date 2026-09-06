@@ -62,7 +62,11 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-black/20 backdrop-blur-md">
-      <div className="mx-auto flex h-20 items-center justify-between px-6 lg:h-[100px] lg:px-12">
+      {/* Gradient scrim: extends past the nav's own bottom edge so content
+          scrolling underneath fades out instead of being cut mid-line. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/90 via-black/40 to-transparent lg:h-56" />
+
+      <div className="relative mx-auto flex h-20 items-center justify-between px-6 lg:h-[100px] lg:px-12">
         <Link href="/" onClick={closeMenu} className="flex items-center">
           <Image
             src={LOGO_URL}
