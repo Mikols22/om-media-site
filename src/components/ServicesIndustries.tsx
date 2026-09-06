@@ -33,7 +33,7 @@ const podcastPlatforms = [
 
 export default function ServicesIndustries() {
   return (
-    <section id="services" className="scroll-mt-16 bg-black lg:scroll-mt-20">
+    <section id="services" className="scroll-mt-20 bg-black lg:scroll-mt-[100px]">
       <div className="border-t border-white/10 px-6 py-20 lg:px-12 lg:py-28">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6 lg:mb-16">
           <div>

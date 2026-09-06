@@ -35,7 +35,7 @@ const localBusinessSchema = buildLocalBusinessSchema({
 
 export default function PodcastProductionPage() {
   return (
-    <main className="min-h-screen bg-black pt-16 lg:pt-20">
+    <main className="min-h-screen bg-black pt-20 lg:pt-[100px]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}

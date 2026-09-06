@@ -147,7 +147,7 @@ export default function CreatorForm() {
   };
 
   return (
-    <section id="creators" className="scroll-mt-16 bg-black lg:scroll-mt-20">
+    <section id="creators" className="scroll-mt-20 bg-black lg:scroll-mt-[100px]">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
         <div className="flex flex-col justify-center px-6 py-20 lg:px-16 lg:py-28 xl:px-24">
           <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">

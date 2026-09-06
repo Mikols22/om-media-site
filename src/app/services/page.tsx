@@ -27,7 +27,7 @@ export default function ServicesPage() {
   );
 
   return (
-    <main className="min-h-screen bg-black pt-16 lg:pt-20">
+    <main className="min-h-screen bg-black pt-20 lg:pt-[100px]">
       <div className="px-6 py-20 lg:px-12 lg:py-28">
         <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
           What We Do

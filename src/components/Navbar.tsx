@@ -62,7 +62,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-black/20 backdrop-blur-md">
-      <div className="mx-auto flex h-16 items-center justify-between px-6 lg:h-20 lg:px-12">
+      <div className="mx-auto flex h-20 items-center justify-between px-6 lg:h-[100px] lg:px-12">
         <Link href="/" onClick={closeMenu} className="flex items-center">
           <Image
             src={LOGO_URL}
@@ -70,7 +70,7 @@ export default function Navbar() {
             width={128}
             height={128}
             priority
-            className="h-10 w-10 lg:h-12 lg:w-12"
+            className="h-[50px] w-[50px] lg:h-[60px] lg:w-[60px]"
           />
         </Link>
 

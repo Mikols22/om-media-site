@@ -46,7 +46,7 @@ export default function AboutStory() {
     <section
       ref={sectionRef}
       id="about"
-      className="scroll-mt-16 bg-black lg:scroll-mt-20"
+      className="scroll-mt-20 bg-black lg:scroll-mt-[100px]"
     >
       <div className="md:grid md:grid-cols-2">
         <div className="relative h-[50vh] md:sticky md:top-0 md:h-screen">

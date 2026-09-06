@@ -9,7 +9,7 @@ export default function ContactTeaser() {
   return (
     <section
       id="contact"
-      className="scroll-mt-16 border-y border-white/10 bg-zinc-950 lg:scroll-mt-20"
+      className="scroll-mt-20 border-y border-white/10 bg-zinc-950 lg:scroll-mt-[100px]"
     >
       <motion.div
         initial={{ opacity: 0, y: 40 }}

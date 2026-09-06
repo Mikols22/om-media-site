@@ -108,7 +108,7 @@ export default function StickyPortfolio() {
   return (
     <section
       id="work"
-      className="flex scroll-mt-16 flex-col bg-black md:flex-row lg:scroll-mt-20"
+      className="flex scroll-mt-20 flex-col bg-black md:flex-row lg:scroll-mt-[100px]"
     >
       <aside className="flex w-full flex-col border-b border-white/10 bg-zinc-950 px-6 py-16 md:sticky md:top-0 md:h-screen md:w-[40%] md:justify-between md:border-b-0 md:border-r md:p-16 lg:p-24">
         <div className="flex flex-col justify-center">
