@@ -11,6 +11,7 @@ import {
 } from "@/content/contactOptions";
 import { PORTFOLIO_CATEGORY_ORDER, industryItems } from "@/components/IndustryGrid";
 import { portfolioImages } from "@/content/portfolioImages";
+import { EMAIL_REGEX } from "@/lib/validation";
 import type { ClientInquiryPayload } from "@/types/submissions";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -613,7 +614,7 @@ export default function ContactFlow() {
                 nextLabel="Send Message"
                 nextDisabled={
                   !contactName.trim() ||
-                  !contactEmail.trim() ||
+                  !EMAIL_REGEX.test(contactEmail) ||
                   !contactPhone.trim()
                 }
                 isSubmitting={isSubmitting}

@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { REAL_ESTATE_TIMELINE_OPTIONS } from "@/content/bookingOptions";
+import { EMAIL_REGEX } from "@/lib/validation";
 import type {
   BookingSubmissionPayload,
   InquiryBookingPayload,
@@ -249,12 +250,6 @@ const serviceCategories: ServiceCategory[] = [
 const projectTypeOptions = ["Commercial", "Social Content", "Other"];
 
 const ease = [0.22, 1, 0.36, 1] as const;
-
-// Same shape ContactFlow relies on native type="email" + required for, but
-// the CRM now hard-rejects malformed real-estate submissions with a 400, so
-// this gates the Submit button explicitly rather than only at native-form-
-// validation time.
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function calculateTotal(services: SelectedService[]) {
   return services.reduce((sum, service) => sum + service.price, 0);
