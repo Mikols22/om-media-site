@@ -250,6 +250,12 @@ const projectTypeOptions = ["Commercial", "Social Content", "Other"];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+// Same shape ContactFlow relies on native type="email" + required for, but
+// the CRM now hard-rejects malformed real-estate submissions with a 400, so
+// this gates the Submit button explicitly rather than only at native-form-
+// validation time.
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function calculateTotal(services: SelectedService[]) {
   return services.reduce((sum, service) => sum + service.price, 0);
 }
@@ -295,6 +301,8 @@ export default function BookingFlow() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [propertyAddress, setPropertyAddress] = useState("");
   const [clientName, setClientName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
   const [preferredShootDate, setPreferredShootDate] = useState("");
   const [accessInstructions, setAccessInstructions] = useState("");
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -403,6 +411,8 @@ export default function BookingFlow() {
       totalPrice,
       propertyAddress,
       clientName,
+      email: clientEmail,
+      phone: clientPhone,
       preferredShootDate,
       accessInstructions,
       timeline: realEstateTimeline ?? "",
@@ -904,6 +914,42 @@ export default function BookingFlow() {
 
                 <div>
                   <label
+                    htmlFor="client-email"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="client-email"
+                    type="email"
+                    required
+                    value={clientEmail}
+                    onChange={(event) => setClientEmail(event.target.value)}
+                    className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                    placeholder="you@company.com"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="client-phone"
+                    className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
+                  >
+                    Phone
+                  </label>
+                  <input
+                    id="client-phone"
+                    type="tel"
+                    required
+                    value={clientPhone}
+                    onChange={(event) => setClientPhone(event.target.value)}
+                    className="w-full border-b border-neutral-700 bg-transparent py-3 text-white outline-none transition-colors duration-300 placeholder:text-neutral-600 focus:border-white"
+                    placeholder="(555) 555-5555"
+                  />
+                </div>
+
+                <div>
+                  <label
                     htmlFor="shoot-date"
                     className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-neutral-500"
                   >
@@ -956,7 +1002,11 @@ export default function BookingFlow() {
                   </button>
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={
+                      isSubmitting ||
+                      !EMAIL_REGEX.test(clientEmail) ||
+                      !clientPhone.trim()
+                    }
                     className="rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-wide text-black transition-colors duration-300 hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Booking"}

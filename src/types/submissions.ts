@@ -15,6 +15,10 @@ export type RealEstateBookingPayload = {
   totalPrice: number;
   propertyAddress: string;
   clientName: string;
+  // Required as of the CRM's live real-estate endpoint — it hard-rejects
+  // submissions missing either with a 400.
+  email: string;
+  phone: string;
   preferredShootDate: string;
   accessInstructions: string;
   // See REAL_ESTATE_TIMELINE_OPTIONS in src/content/bookingOptions.ts for
