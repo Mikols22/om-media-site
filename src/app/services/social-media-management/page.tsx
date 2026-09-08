@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
+import PhoneFrame from "@/components/PhoneFrame";
 import ServiceCTA from "@/components/ServiceCTA";
 import ServiceFaq from "@/components/ServiceFaq";
 import ServiceHero from "@/components/ServiceHero";
 import { buildFaqSchema, type FaqItem } from "@/lib/faqSchema";
 import { buildLocalBusinessSchema } from "@/lib/localBusinessSchema";
+import { getAssetUrl } from "@/lib/assets";
+
+const reelVideos = [
+  getAssetUrl(
+    "Services/social+media+management/social-media-management-reel.mp4",
+    "/videos/social-media-management-reel.mp4",
+  ),
+];
 
 const PATH = "/services/social-media-management";
 const title =
@@ -98,23 +107,30 @@ export default function SocialMediaManagementPage() {
       </div>
 
       <div className="border-t border-white/10 px-6 py-20 lg:px-12 lg:py-28">
-        <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
-          Why It Works
-        </p>
-        <h2 className="mt-4 text-3xl font-bold tracking-tight text-white lg:text-4xl">
-          We shoot first
-        </h2>
-        <div className="mt-6 max-w-2xl space-y-6 text-neutral-400">
-          <p>
-            Most social media management is scheduling. Someone takes what you
-            already have and spreads it across the week.
-          </p>
-          <p>
-            We shoot first. Every package starts with a content shoot at your
-            site, your project, or your listing — real footage of your actual
-            work. That&apos;s what makes the difference between a feed that
-            looks like a business and a feed that looks like a template.
-          </p>
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
+              Why It Works
+            </p>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white lg:text-4xl">
+              We shoot first
+            </h2>
+            <div className="mt-6 max-w-2xl space-y-6 text-neutral-400">
+              <p>
+                Most social media management is scheduling. Someone takes what
+                you already have and spreads it across the week.
+              </p>
+              <p>
+                We shoot first. Every package starts with a content shoot at
+                your site, your project, or your listing — real footage of
+                your actual work. That&apos;s what makes the difference
+                between a feed that looks like a business and a feed that
+                looks like a template.
+              </p>
+            </div>
+          </div>
+
+          <PhoneFrame videos={reelVideos} />
         </div>
       </div>
 
