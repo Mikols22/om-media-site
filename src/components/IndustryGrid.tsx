@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useIsTouchDevice } from "@/lib/useIsTouchDevice";
 
 type GridItem = {
   id: string;
@@ -102,6 +105,8 @@ export const industryItems: GridItem[] = [
 ];
 
 function BentoCard({ item }: { item: GridItem }) {
+  const isTouchDevice = useIsTouchDevice();
+
   return (
     <Link
       href={`/portfolio/${item.slug}`}
@@ -113,9 +118,15 @@ function BentoCard({ item }: { item: GridItem }) {
           alt={item.title}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover opacity-30 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+          className={`object-cover transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 ${
+            isTouchDevice ? "opacity-100" : "opacity-30"
+          }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+        <div
+          className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-80 ${
+            isTouchDevice ? "opacity-80" : ""
+          }`}
+        />
       </div>
 
       <div className="relative z-10 mt-auto pointer-events-none">
