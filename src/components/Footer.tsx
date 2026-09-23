@@ -178,8 +178,22 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 border-t border-white/10 pt-8 text-xs text-neutral-500">
-          © {year} OM Media. All rights reserved.
+        <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} OM Media. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/privacy"
+              className="transition-colors duration-300 hover:text-white"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="transition-colors duration-300 hover:text-white"
+            >
+              Terms &amp; Conditions
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
