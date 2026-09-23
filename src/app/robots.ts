@@ -1,15 +1,24 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
-// ⚠️ PRE-LAUNCH LOCKDOWN — unconditional Disallow: / across every
-// environment (including production), ignoring VERCEL_ENV. The site isn't
-// ready for indexing yet. This MUST be reverted to the environment-aware
-// version (production gets real rules + sitemap, everything else stays
-// locked down) before the real public launch.
 export default function robots(): MetadataRoute.Robots {
+  const isProduction = process.env.VERCEL_ENV === "production";
+
+  if (!isProduction) {
+    return {
+      rules: {
+        userAgent: "*",
+        disallow: "/",
+      },
+    };
+  }
+
   return {
     rules: {
       userAgent: "*",
-      disallow: "/",
+      allow: "/",
+      disallow: "/api/",
     },
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
