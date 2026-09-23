@@ -2,6 +2,7 @@ import {
   LOCAL_BUSINESS_HOURS,
   LOCAL_BUSINESS_INFO,
   LOCAL_SERVICE_AREAS,
+  SOCIAL_PROFILE_URLS,
 } from "@/content/localSeo";
 import { SITE_URL } from "@/lib/site";
 
@@ -27,6 +28,7 @@ export function buildLocalBusinessSchema({
     url: `${SITE_URL}${path}`,
     email: LOCAL_BUSINESS_INFO.email,
     telephone: LOCAL_BUSINESS_INFO.telephone,
+    sameAs: SOCIAL_PROFILE_URLS,
     address: {
       "@type": "PostalAddress",
       streetAddress: LOCAL_BUSINESS_INFO.streetAddress,

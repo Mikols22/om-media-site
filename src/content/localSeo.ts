@@ -34,6 +34,15 @@ export const LOCAL_BUSINESS_INFO = {
   addressCountry: "US",
 };
 
+// Social profile URLs — feeds LocalBusiness JSON-LD's sameAs array (how
+// Google connects the site to these profiles) and the Footer's social
+// links. Keep in sync if a handle ever changes.
+export const SOCIAL_PROFILE_URLS = [
+  "https://www.instagram.com/ommediallc/",
+  "https://www.linkedin.com/company/oscarmikolsmedia/",
+  "https://www.youtube.com/@ommediallc",
+];
+
 // Must match the Google Business Profile listing exactly — update both if
 // hours change. Shape matches schema.org's OpeningHoursSpecification. Sunday
 // (closed) is intentionally omitted — closed days aren't listed, they're
