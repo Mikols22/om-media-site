@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PortfolioGallery from "@/components/PortfolioGallery";
 import { portfolioCategoryContent } from "@/content/portfolioCategories";
-import { portfolioImages } from "@/content/portfolioImages";
+import { portfolioImageAlts, portfolioImages } from "@/content/portfolioImages";
 
 function formatSlug(slug: string) {
   return slug.replace(/-/g, " ").toUpperCase();
@@ -10,10 +10,13 @@ function formatSlug(slug: string) {
 
 // Per-category override for the base alt text PortfolioGallery appends an
 // index to (e.g. "Executive headshot 1") — falls back to formatSlug(slug)
-// for categories that don't need anything more descriptive.
+// for categories that don't need anything more descriptive. Categories with
+// a portfolioImageAlts[slug] entry (e.g. hospitality) use real per-image alt
+// text instead and ignore this map entirely.
 const ALT_TEXT_OVERRIDES: Record<string, string> = {
   headshots: "Executive headshot",
   "real-estate": "Real estate listing photography",
+  architecture: "Architectural photography",
 };
 
 export async function generateMetadata({
@@ -74,7 +77,7 @@ export default async function PortfolioPage({
         <div className="mt-16">
           <PortfolioGallery
             images={images}
-            alt={ALT_TEXT_OVERRIDES[slug] ?? formatSlug(slug)}
+            alt={portfolioImageAlts[slug] ?? ALT_TEXT_OVERRIDES[slug] ?? formatSlug(slug)}
           />
         </div>
       )}

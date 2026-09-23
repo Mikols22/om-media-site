@@ -40,12 +40,11 @@ export const portfolioCategoryContent: Record<string, PortfolioCategoryContent> 
       "Commercial photography and video for businesses across Bucks County and Philadelphia.",
   },
   hospitality: {
-    // [PLACEHOLDER] Write real intro copy once this gallery has images.
     intro:
-      "[PLACEHOLDER] Intro copy for hospitality photography — write once this gallery has images.",
+      "Hotel, resort, and restaurant photography for hospitality brands across the East Coast and beyond. Guest rooms, suites, amenities, dining, and the atmosphere that makes a property worth booking.",
     metaTitle: "Hospitality Photography in Bucks County, PA | OM Media",
     metaDescription:
-      "Hospitality and hotel photography for venues across Bucks County and beyond. Gallery coming soon.",
+      "Hotel, resort, and restaurant photography for hospitality brands across the East Coast and beyond.",
   },
   "golf-courses": {
     // [PLACEHOLDER] Write real intro copy once this gallery has images.

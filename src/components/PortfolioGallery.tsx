@@ -11,6 +11,14 @@ import {
 import { useLenis } from "lenis/react";
 import { useIsTouchDevice } from "@/lib/useIsTouchDevice";
 
+// `alt` is either a single base string (appended with "1", "2", ... per
+// image — fine for categories where the images don't need individually
+// descriptive text) or a full per-image array, for categories like
+// hospitality where they do.
+function getAltText(alt: string | string[], index: number): string {
+  return Array.isArray(alt) ? (alt[index] ?? `Image ${index + 1}`) : `${alt} ${index + 1}`;
+}
+
 function CloseIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
@@ -32,7 +40,7 @@ function Lightbox({
   onClose,
 }: {
   images: string[];
-  alt: string;
+  alt: string | string[];
   index: number;
   onIndexChange: (index: number) => void;
   onClose: () => void;
@@ -89,7 +97,7 @@ function Lightbox({
           than a fixed layout box */}
       <img
         src={images[index]}
-        alt={`${alt} ${index + 1}`}
+        alt={getAltText(alt, index)}
         className="max-h-full max-w-full object-contain"
       />
     </motion.div>
@@ -102,7 +110,7 @@ function DesktopGallery({
   onOpen,
 }: {
   images: string[];
-  alt: string;
+  alt: string | string[];
   onOpen: (index: number) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -162,7 +170,7 @@ function DesktopGallery({
                   distort or require hardcoding intrinsic sizes per photo */}
               <img
                 src={src}
-                alt={`${alt} ${index + 1}`}
+                alt={getAltText(alt, index)}
                 className="h-full w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
               />
             </button>
@@ -179,7 +187,7 @@ function MobileGallery({
   onOpen,
 }: {
   images: string[];
-  alt: string;
+  alt: string | string[];
   onOpen: (index: number) => void;
 }) {
   return (
@@ -193,7 +201,7 @@ function MobileGallery({
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- natural
               aspect ratio per image in a simple vertical stack */}
-          <img src={src} alt={`${alt} ${index + 1}`} className="w-full" />
+          <img src={src} alt={getAltText(alt, index)} className="w-full" />
         </button>
       ))}
     </div>
@@ -205,7 +213,7 @@ export default function PortfolioGallery({
   alt,
 }: {
   images: string[];
-  alt: string;
+  alt: string | string[];
 }) {
   const isTouchDevice = useIsTouchDevice();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
