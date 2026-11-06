@@ -40,7 +40,7 @@ Payload types in `src/types/submissions.ts`; validation in `src/lib/validation.t
 ## Assets
 
 - `getAssetUrl(remoteFilename, localPath)` (`src/lib/assets.ts`) returns `${NEXT_PUBLIC_ASSET_URL}/${remoteFilename}` (Backblaze B2, `.../om-media-site-assets`) when the env var is set — it is set in `.env.local`/`.env.example` and in production — else the local `/public` fallback.
-- **B2-hosted:** hero video (`hero.mp4`), StickyPortfolio videos, logo, and the `architecture` and `hospitality` portfolio galleries (`Galleries/<category>/`). Local copies of those galleries under `public/images/portfolio/{architecture,hospitality}/` are untracked leftovers, not used when the env var is set.
+- **B2-hosted:** hero video (`hero.mp4`), StickyPortfolio videos, logo, and the `architecture` and `hospitality` portfolio galleries (`Galleries/<category>/`). There are no local copies of those two galleries, so they only render when `NEXT_PUBLIC_ASSET_URL` is set.
 - **Local (`public/images/`):** `real-estate` and `headshots` galleries, single-image categories, CanvasScroll frames, `hero-poster.jpg` (frame 0 of B2 `hero.mp4`).
 - `public/videos/` is gitignored — only a local fallback for when `NEXT_PUBLIC_ASSET_URL` is unset.
 - Portfolio data: `src/content/portfolioImages.ts` (image lists + per-image alt for hospitality), `portfolioCategories.ts` (intro/meta copy), `industries.ts` (category list/order). `food-and-bev` and `golf-courses` have no images → "Gallery coming soon."
