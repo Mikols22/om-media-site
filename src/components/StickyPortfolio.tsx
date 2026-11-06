@@ -158,7 +158,7 @@ export default function StickyPortfolio() {
             href="/work"
             className="mt-8 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-300 hover:opacity-70"
           >
-            View All Work →
+            View All Industries →
           </Link>
         </div>
       </aside>

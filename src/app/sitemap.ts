@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { industryItems } from "@/components/IndustryGrid";
+import { industryItems } from "@/content/industries";
 import { serviceLines } from "@/content/services";
 import { SITE_URL } from "@/lib/site";
 

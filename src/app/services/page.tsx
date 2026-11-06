@@ -103,7 +103,7 @@ export default function ServicesPage() {
           href="/work"
           className="mt-8 inline-block rounded-full border border-white/30 px-8 py-4 text-sm font-medium text-white transition-colors duration-300 hover:border-white"
         >
-          View Our Work
+          View All Industries
         </Link>
       </div>
     </main>

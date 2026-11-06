@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { PORTFOLIO_CATEGORY_ORDER, industryItems } from "@/components/IndustryGrid";
+import {
+  LANDING_PAGE_HREFS,
+  PORTFOLIO_CATEGORY_ORDER,
+  categoryHref,
+  industryItems,
+} from "@/content/industries";
 import { portfolioImages } from "@/content/portfolioImages";
 
 const title = "Portfolio | OM Media";
@@ -35,11 +40,14 @@ function CategoryCard({
   title: string;
   imageSrc: string;
 }) {
-  const hasGallery = (portfolioImages[slug] ?? []).length > 0;
+  // Landing pages always have content, so those cards render as populated
+  // regardless of gallery image count.
+  const hasGallery =
+    slug in LANDING_PAGE_HREFS || (portfolioImages[slug] ?? []).length > 0;
 
   return (
     <Link
-      href={`/portfolio/${slug}`}
+      href={categoryHref(slug)}
       className={`group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-2xl border p-6 transition-colors duration-300 ${
         hasGallery
           ? "border-white/10 hover:border-white/30"

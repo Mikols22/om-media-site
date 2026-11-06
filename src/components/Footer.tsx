@@ -6,7 +6,7 @@ import { serviceLines } from "@/content/services";
 import { LOGO_URL } from "@/lib/assets";
 
 const exploreLinks = [
-  { href: "/work", label: "Work" },
+  { href: "/work", label: "Industries" },
   { href: "/services", label: "Services" },
   { href: "/hospitality", label: "Hospitality" },
   { href: "/golf", label: "Golf" },
@@ -136,7 +136,7 @@ export default function Footer() {
               ))}
               <li>
                 <a
-                  href="https://om-media-crm.vercel.app/portal/login"
+                  href="https://portal.om-media.com/portal/login"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-neutral-300 transition-colors duration-300 hover:text-white"

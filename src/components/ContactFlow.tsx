@@ -9,7 +9,7 @@ import {
   REFERRAL_OPTIONS,
   TIMELINE_OPTIONS,
 } from "@/content/contactOptions";
-import { PORTFOLIO_CATEGORY_ORDER, industryItems } from "@/components/IndustryGrid";
+import { PORTFOLIO_CATEGORY_ORDER, industryItems } from "@/content/industries";
 import { portfolioImages } from "@/content/portfolioImages";
 import { EMAIL_REGEX } from "@/lib/validation";
 import type { ClientInquiryPayload } from "@/types/submissions";

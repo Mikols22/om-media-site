@@ -14,7 +14,7 @@ type NavLink = {
 };
 
 const navLinks: NavLink[] = [
-  { href: "/work", label: "Work" },
+  { href: "/work", label: "Industries" },
   {
     href: "/services",
     label: "Services",
@@ -23,8 +23,8 @@ const navLinks: NavLink[] = [
       label: service.name,
     })),
   },
-  { href: "/hospitality", label: "Hospitality" },
-  { href: "/golf", label: "Golf" },
+  // Hospitality and Golf landing pages are reached via /work and the Footer,
+  // not the top-level nav.
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -162,7 +162,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href="https://om-media-crm.vercel.app/portal/login"
+            href="https://portal.om-media.com/portal/login"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden rounded-full border border-white px-5 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-white hover:text-black lg:inline-block"
@@ -276,7 +276,7 @@ export default function Navbar() {
               )}
               <li className="mt-2 border-t border-white/10 pt-5">
                 <a
-                  href="https://om-media-crm.vercel.app/portal/login"
+                  href="https://portal.om-media.com/portal/login"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
