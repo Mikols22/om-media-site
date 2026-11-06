@@ -2,91 +2,60 @@
 
 Marketing site + client tools for OM Media (video production / digital strategy agency).
 
+**`main` auto-deploys to production.** Commit locally, but don't push until changes have been reviewed on localhost.
+
 ## Stack
 
 - Next.js 16.2.9 (App Router) — **breaking changes vs. training data, read `node_modules/next/dist/docs/` before writing Next-specific code**
 - React 19.2.4 / react-dom 19.2.4
 - TypeScript 5, Tailwind CSS 4 (via `@tailwindcss/postcss`)
-- framer-motion 12.40.0 — scroll/viewport animation throughout. **Known bug: a `useTransform` value derived directly from `useScroll`'s `scrollYProgress`, when fed straight into a `style` prop (e.g. `style={{ opacity, filter }}`), silently never updates the DOM** — it renders fine as `motion.span`/`motion.div` children (text content), and reproduces even with zero per-element logic (just `scrollYProgress` itself as `style={{ opacity: scrollYProgress }}`). No error, no warning — the value just stays frozen at its initial state forever, silently, while the underlying `scrollYProgress` motion value demonstrably keeps updating fine (confirmed via inspecting it as text content in parallel). Root cause not fully identified (possibly a framer-motion / React 19 / Turbopack interaction). **Fix: wrap the value in `useSpring(...)` before using it in `style`** — a stiff spring (e.g. `{ stiffness: 400, damping: 45, mass: 0.3 }`) fixes it reliably with negligible added lag. See `HeroHeadlineReveal.tsx` for a working example. If you hit a scroll-driven `style`-bound animation that appears to do nothing (values stuck at their initial value, no console errors), check this before re-diagnosing from scratch.
-- gsap 3.15.0 — installed, not currently used in any component
-- lenis 1.3.26 (`lenis/react`'s `ReactLenis`) — smooth scroll wrapper (`SmoothScroll.tsx`), replacing the deprecated `@studio-freight/react-lenis` (React 19 incompatible). Disabled on `pointer: coarse` (touch) devices. **`content` is explicitly set to `document.body`, not the default `document.documentElement`** — the root `<html>` has `h-full` (`height: 100%`), which pins its own box to the viewport regardless of overflowing content, so Lenis's `ResizeObserver` never fires on `<html>` when the page grows after mount. Symptom if this regresses: scroll hard-stops short of the true bottom (by roughly the amount of height added) after anything changes page height post-mount — an accordion expanding, images loading in, etc. Fix is pointing `content` at `document.body`, which only has `min-h-full` and actually resizes with its content.
+- framer-motion 12.40.0 — scroll/viewport animation throughout. **Known bug: a `useTransform` value derived directly from `useScroll`'s `scrollYProgress`, when fed straight into a `style` prop (e.g. `style={{ opacity, filter }}`), silently never updates the DOM** — it renders fine as `motion.span`/`motion.div` children (text content), and reproduces even with zero per-element logic (just `scrollYProgress` itself as `style={{ opacity: scrollYProgress }}`). No error, no warning — the value just stays frozen at its initial state forever, while the underlying `scrollYProgress` keeps updating fine. Root cause not fully identified (possibly a framer-motion / React 19 / Turbopack interaction). **Fix: wrap the value in `useSpring(...)` before using it in `style`** — a stiff spring (e.g. `{ stiffness: 400, damping: 45, mass: 0.3 }`) fixes it reliably with negligible added lag. See `HeroHeadlineReveal.tsx` for a working example.
+- gsap 3.15.0 — installed, not used in any component
+- lenis 1.3.26 (`lenis/react`'s `ReactLenis`) — smooth scroll wrapper (`SmoothScroll.tsx`). Disabled on `pointer: coarse` (touch) devices. **`content` is explicitly set to `document.body`, not the default `document.documentElement`** — the root `<html>` has `h-full`, which pins its box to the viewport, so Lenis's `ResizeObserver` never fires when the page grows after mount. Symptom if this regresses: scroll hard-stops short of the true bottom after anything changes page height post-mount.
 - ESLint 9 / eslint-config-next
 
-No test runner, no CI config, no `vercel.json`/`vercel.ts`.
+No test runner, no CI config, no `vercel.json`/`vercel.ts`. Checks: `npx tsc --noEmit`, `npm run lint`.
 
-## Directory layout (`src/`)
+## Gotchas
 
-```
-src/app/
-  layout.tsx                 root layout: fonts, SmoothScroll wrapper, Navbar, metadata still says "Create Next App" (unedited)
-  page.tsx                   homepage — composes the section sequence below
-  globals.css
-  book/page.tsx               /book route, renders BookingFlow
-  portfolio/[slug]/page.tsx   dynamic gallery route, client component
-  api/submit-application/route.ts   POST proxy to external CRM
+- **Don't export plain data from a `"use client"` module and import it into a server component / route handler.** Across the client boundary it becomes a client reference, so e.g. `.map` throws at render time (500, no type error). Shared data lives in `src/content/` (e.g. industry/category data is in `src/content/industries.ts`, not `IndustryGrid.tsx`).
+- `useIsTouchDevice` (`src/lib/useIsTouchDevice.ts`, `pointer: coarse`) returns `true` during SSR and hydration, then the real value. Anything rendered in the touch branch is therefore server-rendered for desktop too — don't put eagerly-loaded assets there without gating on hydration (see `CanvasScroll`'s `StaticFallback`).
+- Measuring a horizontally-overflowing flex strip with `ResizeObserver`: the strip needs `w-max shrink-0`, otherwise it shrinks to its parent and its box never resizes as content loads (see `PortfolioGallery`'s `DesktopGallery`).
 
-src/components/
-  Navbar.tsx            fixed nav: anchor links (#work/#services/#about/#contact — no matching ids on page), /book, external client portal link
-  SmoothScroll.tsx        Lenis root wrapper used in layout.tsx
-  CanvasScroll.tsx         canvas <img> sequence wipe effect, scroll-driven (see below)
-  StickyPortfolio.tsx     sticky sidebar + scrolling video project list (IntersectionObserver-driven active state)
-  ServicesIndustries.tsx  bento grid linking to /portfolio/[slug], marquee strip, podcast platform links (hrefs are "#")
-  PersonalBranding.tsx    static two-column section, references summerhouse-design-branding.jpg
-  AboutStory.tsx           scroll-fade story blocks + parallax image, references team-photo.jpg
-  CreatorForm.tsx         "Become a Creator" application form (see below)
-  BookingFlow.tsx          service picker + property details (see below)
-  ScrollSequence.tsx       NOT imported anywhere — orphaned component, references process-1/2/3.jpg which don't exist in public/images
-```
+## Routes (`src/app/`)
 
-## Homepage component sequence (`src/app/page.tsx`)
+`/` · `/work` (portfolio index) · `/portfolio/[slug]` · `/services` · `/services/{branding-shoots,content-creation,podcast-production,social-media-management,video-production}` · `/hospitality` · `/golf` · `/about` · `/contact` (`ContactFlow`) · `/creators` (`CreatorForm`) · `/book` (`BookingFlow`) · `/privacy` · `/terms` · `sitemap.ts` · `robots.ts` (environment-aware) · `opengraph-image.tsx`.
 
-1. Hero: `<video>` background (via `getAssetUrl`, B2-hosted `hero.mp4` with local fallback) + headline
-2. `CanvasScroll` — 300vh scroll-linked image-sequence wipe transition
-3. `StickyPortfolio` — video case studies
-4. `ServicesIndustries` — industry bento grid + podcast teaser
-5. `PersonalBranding`
-6. `AboutStory`
-7. `CreatorForm`
+Root `layout.tsx` has real metadata ("OM Media | Video Production & Digital Strategy"), `SmoothScroll`, `Navbar`, `Footer`. Navbar has four top-level items — Industries (→ `/work`; every navigation label pointing at `/work` — nav, Footer, homepage and /services buttons — says "Industries", only prose says "work"), Services (dropdown), About, Contact — plus Book a Shoot (desktop and mobile drawer both render from `navLinks`). `/hospitality` and `/golf` are not in the nav; they're reached via the Footer and `/work`, whose Hospitality and Golf Courses cards — like the homepage `IndustryGrid` — link to those landing pages instead of their `/portfolio/[slug]` galleries (`LANDING_PAGE_HREFS` / `categoryHref()` in `src/content/industries.ts`, shared by both). Also an external "Client Login" at `https://portal.om-media.com/portal/login` (also in `Footer`) — keep the `/portal/login` path; bare `/login` is the staff sign-in.
 
-No preloader — removed after determining it never gated real readiness (it was a fixed-duration overlay on top of a page that mounts underneath regardless) and was pure friction on every visit. The hero `<video>` has a `poster` attribute to avoid a black flash while it buffers.
+## Form submissions → CRM
 
-## CanvasScroll mechanics
+`/book`, `/creators` and `/contact` all POST to API routes (`/api/submit-booking`, `/api/submit-application`, `/api/submit-contact`) which go through `submitOrStoreLocally` in `src/lib/submissions.ts`:
 
-Draws frames from `public/images/sequence/05homescroll-wipe00.jpg` … `wipe95.jpg` (96 frames, `FRAME_COUNT = 96`; the directory on disk actually has ~97 files) onto a `<canvas>`, mapping `scrollYProgress` (via framer-motion `useScroll` over a 300vh container) to a frame index. Images are preloaded once on mount via plain `Image()` objects (no cleanup/cancellation). No loading state UI beyond `isReady` gating the first draw.
+- `SUBMISSIONS_MODE=crm` → POSTs to `CRM_API_BASE_URL` + per-route path (`/api/bookings`, `/api/creators/apply`, `/api/contact`) with `Authorization: Bearer ${CRM_API_KEY}`. In production this is live against `crm.om-media.com`.
+- Unset / `local` (the default, and the local `.env.local` state) → writes JSON to gitignored `data/submissions/<kind>/` instead.
 
-## Booking flow (`/book` → `BookingFlow.tsx`)
-
-- Step 1: client picks any number of services from `serviceCategories` (hardcoded array — photo packages, drone add-ons, video packages, floor plans/Matterport, twilight/production add-ons). Running total computed client-side.
-- Step 2: property address, client name, shoot date, access instructions.
-- On submit: **`handleSubmit` only sets local `isSubmitted` state** — no network request, no persistence, no email/CRM call. Selected services and property details are discarded on refresh.
-
-## Creator application form (`CreatorForm.tsx` → `/api/submit-application`)
-
-- Form fields: name, email, phone, portfolio link, availability (single-select pill), service areas (multi-select pill).
-- On submit, POSTs JSON to `/api/submit-application`.
-- Route handler (`src/app/api/submit-application/route.ts`) forwards the body to `process.env.CRM_API_URL` with `Authorization: Bearer ${CRM_API_KEY}`, relays the CRM's response.
-- **`.env.local` currently has both `CRM_API_URL` and `CRM_API_KEY` empty** → route always returns 500 "CRM configuration is missing." This is the intended integration point, likely to `om-media-crm.vercel.app` (linked from `Navbar.tsx`'s "Client Login").
+Payload types in `src/types/submissions.ts`; validation in `src/lib/validation.ts` (mirrors what the CRM hard-rejects).
 
 ## Assets
 
-- `public/images/` — real photo assets + `sequence/` (96-frame wipe sequence for CanvasScroll)
-- `public/videos/` — **gitignored** (`.gitignore` line `public/videos/`), still the local fallback for the hero and StickyPortfolio videos when `NEXT_PUBLIC_ASSET_URL` is unset (see `src/lib/assets.ts`'s `getAssetUrl`). All four of those videos are now primarily served compressed from Backblaze B2 instead — the old 170MB–770MB local files predate that migration and are no longer representative of production size.
-- Some referenced images don't exist in `public/images`: `process-1/2/3.jpg` (only used by the orphaned `ScrollSequence.tsx`), and several `/portfolio/[slug]` gallery entries (`real-estate-*.jpg`) are not present on disk.
+- `getAssetUrl(remoteFilename, localPath)` (`src/lib/assets.ts`) returns `${NEXT_PUBLIC_ASSET_URL}/${remoteFilename}` (Backblaze B2, `.../om-media-site-assets`) when the env var is set — it is set in `.env.local`/`.env.example` and in production — else the local `/public` fallback.
+- **B2-hosted:** hero video (`hero.mp4`), StickyPortfolio videos, logo, and the `architecture` and `hospitality` portfolio galleries (`Galleries/<category>/`). Local copies of those galleries under `public/images/portfolio/{architecture,hospitality}/` are untracked leftovers, not used when the env var is set.
+- **Local (`public/images/`):** `real-estate` and `headshots` galleries, single-image categories, CanvasScroll frames, `hero-poster.jpg` (frame 0 of B2 `hero.mp4`).
+- `public/videos/` is gitignored — only a local fallback for when `NEXT_PUBLIC_ASSET_URL` is unset.
+- Portfolio data: `src/content/portfolioImages.ts` (image lists + per-image alt for hospitality), `portfolioCategories.ts` (intro/meta copy), `industries.ts` (category list/order). `food-and-bev` and `golf-courses` have no images → "Gallery coming soon."
 
-## Current state
+## Homepage (`src/app/page.tsx`)
 
-**Done:**
-- Homepage layout and all scroll/animation sections are implemented and visually complete (hero, CanvasScroll wipe, sticky portfolio, services bento grid, personal branding, about story, creator form).
-- `/book` booking UI: full service catalog with live pricing, two-step flow, order summary bar.
-- Creator application form UI, client-side validation, loading/success/error states.
-- Dynamic `/portfolio/[slug]` gallery route with per-category image grids.
+Hero `<video>` (B2 `hero.mp4`, `poster="/images/hero-poster.jpg"`) → `HeroHeadlineReveal` → `CanvasScroll` → `StickyPortfolio` → `ServicesIndustries` (uses `IndustryGrid`) → `PersonalBranding` → `AboutStory` → `ContactTeaser` → `CreatorForm`.
 
-**Unfinished / broken:**
-- Booking submission (`BookingFlow.tsx`) does not send data anywhere — it's UI-only, nothing is persisted or delivered to OM Media.
-- Creator application submission is wired to a CRM proxy that has no configured URL/key (`.env.local` empty) — always fails in current state.
-- `public/videos` is gitignored, so homepage/portfolio video assets are not reproducible from a fresh clone.
-- Several portfolio categories (`hospitality`, `food-and-bev`, `golf-courses`, `headshots`) have no images — render "Gallery coming soon."
-- Navbar anchor links (`#work`, `#services`, `#about`, `#contact`) don't correspond to any section `id`s on the homepage.
-- `ScrollSequence.tsx` is dead code (unused, and references missing images).
-- Root layout `<head>` metadata is still the default "Create Next App" title/description.
-- No tests, no CI, no deployment config committed.
+### CanvasScroll
+
+- Desktop: 96 frames `public/images/sequence/05homescroll-wipe00.jpg`…`wipe95.jpg` (1920×1080 JPEG q80, ~32 MB total) drawn to a `<canvas>` from `scrollYProgress` over a 300vh container. Preload is gated by an `IntersectionObserver` (starts one viewport before the section) — nothing is fetched at page load.
+- Touch (`useIsTouchDevice`): no canvas, no preload — a single static `<img>` of the last frame in a 100vh block, rendered only after hydration.
+
+## Known loose ends
+
+- `ScrollSequence.tsx` is dead code (unused; references missing `process-1/2/3.jpg`).
+- Podcast platform links: `/services/podcast-production` and the homepage podcast teaser (`ServicesIndustries.tsx`) link only YouTube (channel URL) until Apple Podcasts/Spotify URLs exist — add them back in both places.
+- `sticky-scroll/` at the repo root is untracked working material — leave it alone.
