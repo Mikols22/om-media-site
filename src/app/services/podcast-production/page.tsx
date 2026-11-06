@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   },
 };
 
-// [PLACEHOLDER] Replace with the real Season 1 links once supplied.
+// Apple Podcasts and Spotify links aren't available yet — add them back
+// here (and restore the platform list in the copy above) once supplied.
+// YouTube points at the channel, same URL as the Footer's social link.
 const LISTEN_LINKS = [
-  { label: "YouTube", href: "#" },
-  { label: "Apple Podcasts", href: "#" },
-  { label: "Spotify", href: "#" },
+  { label: "YouTube", href: "https://www.youtube.com/@ommediallc" },
 ];
 
 const localBusinessSchema = buildLocalBusinessSchema({
@@ -63,8 +63,7 @@ export default function PodcastProductionPage() {
             content that positions you as a voice in your industry.
           </p>
           <p>
-            Season one is available now on YouTube, Apple Podcasts, and
-            Spotify. Season two begins recording in October.
+            Season one is available now on YouTube.
           </p>
         </div>
       </div>
@@ -102,7 +101,7 @@ export default function PodcastProductionPage() {
           <p>
             Episodes are recorded in studio, edited, and sent to you for
             approval before anything publishes. Once you sign off, the
-            episode goes live on YouTube, Apple Podcasts, and Spotify.
+            episode goes live on YouTube.
           </p>
         </div>
       </div>
@@ -129,7 +128,8 @@ export default function PodcastProductionPage() {
             <a
               key={link.label}
               href={link.href}
-              aria-label={`[PLACEHOLDER] ${link.label} — replace href with the real season one link`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-full border border-white/30 px-6 py-3 text-sm font-medium text-white transition-colors duration-300 hover:border-white"
             >
               {link.label}

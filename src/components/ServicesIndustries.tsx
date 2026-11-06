@@ -1,31 +1,15 @@
 import Link from "next/link";
 import IndustryGrid from "@/components/IndustryGrid";
 
+// Apple Podcasts and Spotify links aren't available yet — add them back
+// here once supplied. YouTube points at the channel (same URL as the Footer).
 const podcastPlatforms = [
   {
-    name: "Spotify",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.49 17.28a.75.75 0 01-1.02.27c-2.8-1.71-6.32-2.1-10.47-1.15a.75.75 0 11-.33-1.46c4.52-1.03 8.42-.58 11.58 1.28a.75.75 0 01.24 1.06zm1.47-3.27a.94.94 0 01-1.28.34c-3.2-1.95-8.08-2.52-11.87-1.38a.94.94 0 11-.55-1.8c4.35-1.32 9.75-.67 13.42 1.57a.94.94 0 01.28 1.27zm.13-3.41C15.24 8.4 8.82 8.16 5.16 9.28a1.12 1.12 0 11-.65-2.15c4.17-1.27 11.28-1.02 15.63 1.4a1.12 1.12 0 11-1.17 1.95z" />
-      </svg>
-    ),
-  },
-  {
     name: "YouTube",
-    href: "#",
+    href: "https://www.youtube.com/@ommediallc",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
         <path d="M23.5 6.2a3.03 3.03 0 00-2.14-2.16C19.55 3.5 12 3.5 12 3.5s-7.55 0-9.36.54A3.03 3.03 0 00.5 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.5 5.8 3.03 3.03 0 002.14 2.16c1.81.54 9.36.54 9.36.54s7.55 0 9.36-.54a3.03 3.03 0 002.14-2.16A31.6 31.6 0 0024 12a31.6 31.6 0 00-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Apple Podcasts",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-        <path d="M5.34 0A5.34 5.34 0 000 5.34v13.32A5.34 5.34 0 005.34 24h13.32A5.34 5.34 0 0024 18.66V5.34A5.34 5.34 0 0018.66 0H5.34zm9.3 4.07c2.84 0 5.14 2.3 5.14 5.14 0 1.92-1.06 3.59-2.62 4.47.09.35.14.72.14 1.1v1.55a2.07 2.07 0 01-4.13 0v-1.55c0-.38.05-.75.14-1.1a5.13 5.13 0 01-2.62-4.47c0-2.84 2.3-5.14 5.14-5.14zm0 2.07a3.07 3.07 0 100 6.14 3.07 3.07 0 000-6.14zm-3.1 9.28a3.1 3.1 0 016.2 0H11.54z" />
       </svg>
     ),
   },
@@ -89,14 +73,16 @@ export default function ServicesIndustries() {
 
           <div className="flex items-center gap-4">
             {podcastPlatforms.map((platform) => (
-              <Link
+              <a
                 key={platform.name}
                 href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={`Listen on ${platform.name}`}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-black"
               >
                 {platform.icon}
-              </Link>
+              </a>
             ))}
           </div>
         </div>
