@@ -122,6 +122,16 @@ function DesktopGallery({
   // the pin's scroll distance in sync — this is also what makes the pin
   // release exactly when the last image passes, rather than an arbitrary
   // fixed vh guess.
+  //
+  // The strip must be `w-max shrink-0`: as a plain flex item it shrinks to
+  // the sticky parent's width, its own box never resizes as images load (only
+  // its overflow does), so the ResizeObserver never fires and extraScroll
+  // stays stuck at whatever was measured on mount. That silently broke
+  // galleries whose images load slower than mount (B2-hosted architecture /
+  // hospitality) while local ones happened to work. Each image's onLoad also
+  // re-measures, as a belt-and-braces fallback.
+  const measureRef = useRef<() => void>(() => {});
+
   useEffect(() => {
     const strip = stripRef.current;
     if (!strip) return;
@@ -131,6 +141,7 @@ function DesktopGallery({
       setExtraScroll(Math.max(0, stripWidth - window.innerWidth));
     }
 
+    measureRef.current = measure;
     measure();
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(strip);
@@ -156,7 +167,7 @@ function DesktopGallery({
       className="relative"
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div ref={stripRef} style={{ x: smoothX }} className="flex gap-4 px-6 lg:gap-6 lg:px-12">
+        <motion.div ref={stripRef} style={{ x: smoothX }} className="flex w-max shrink-0 gap-4 px-6 lg:gap-6 lg:px-12">
           {images.map((src, index) => (
             <button
               key={src}
@@ -171,6 +182,7 @@ function DesktopGallery({
               <img
                 src={src}
                 alt={getAltText(alt, index)}
+                onLoad={() => measureRef.current()}
                 className="h-full w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
               />
             </button>
